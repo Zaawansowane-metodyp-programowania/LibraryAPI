@@ -12,11 +12,12 @@ namespace LibraryAPI.Models
             "Server=tcp:libraryapi1.database.windows.net,1433;Initial Catalog=LibraryApi;Persist Security Info=False;User ID=adminlibrary;Password=library123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
         public DbSet<Books> Books { get; set; }
         public DbSet<Users> Users { get; set; }
+        
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
           
-            modelBuilder.Entity<BooksUsers>().HasKey(x => new { x.BooksId, x.UsersId });
+           
 
         }
 

@@ -19,9 +19,7 @@ namespace LibraryAPI.Models
         public string Password { get; set; }
         [Required]
         public int Authorization { get; set; }
-        public virtual ICollection<BooksUsers> Books { get; set; }
-
-
+        public virtual Books Books { get; set; }
 
     }
 }

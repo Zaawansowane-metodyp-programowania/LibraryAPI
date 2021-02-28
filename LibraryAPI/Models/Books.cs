@@ -7,8 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LibraryAPI.Models
 {
     public class Books
-    {
-        
+    {        
         [Key]
         public int Id { get; set; }
         [Required]
@@ -21,15 +20,15 @@ namespace LibraryAPI.Models
         public string PublisherName { get; set; }
         [Required]
         public int PublishDate { get; set; }
-        [Required]
-        public int ActualStock { get; set; }
-        [Required]
-        public int CurrentStock { get; set; }
+      
         public string Language { get; set; }
         public string BookDescription { get; set; }
+        [Required]
+        public int UsersId { get; set; }
+
+        public virtual Users Users { get; set; }
 
 
-        public virtual ICollection<BooksUsers> Users { get; set; }
 
 
 
