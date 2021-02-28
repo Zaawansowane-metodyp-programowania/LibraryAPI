@@ -2,22 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryAPI.Models
 {
     public class Books
     {
+        
+        [Key]
         public int Id { get; set; }
+        [Required]
         public string ISBN { get; set; }
-        public string book_name { get; set; }
-        public string author_name { get; set; }
-        public string publisher_name { get; set; }
-        public string language { get; set; }
-        public string book_description { get; set; }
-        public int publish_date { get; set; }
-        public int actual_stock { get; set; }
-        public int current_stock { get; set; }
-       
+        [Required]
+        public string BookName { get; set; }
+        [Required]
+        public string AuthorName { get; set; }
+        [Required]
+        public string PublisherName { get; set; }
+        [Required]
+        public int PublishDate { get; set; }
+        [Required]
+        public int ActualStock { get; set; }
+        [Required]
+        public int CurrentStock { get; set; }
+        public string Language { get; set; }
+        public string BookDescription { get; set; }
+
 
         public virtual ICollection<BooksUsers> Users { get; set; }
 

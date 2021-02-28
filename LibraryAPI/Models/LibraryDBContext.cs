@@ -9,70 +9,14 @@ namespace LibraryAPI.Models
     public class LibraryDBContext: DbContext
     {
         private string _connectionString =
-            "Server=(localdb)\\mssqllocaldb;Database=LibraryDB;Trusted_Connection=True;";
+            "Server=tcp:libraryapi1.database.windows.net,1433;Initial Catalog=LibraryApi;Persist Security Info=False;User ID=adminlibrary;Password=library123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
         public DbSet<Books> Books { get; set; }
         public DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Books>()
-                .Property(b => b.Id)
-                .IsRequired();
-
-            modelBuilder.Entity<Books>()
-               .Property(b => b.ISBN)
-               .IsRequired();
-
-            modelBuilder.Entity<Books>()
-               .Property(b => b.book_name)
-               .IsRequired();
-
-            modelBuilder.Entity<Books>()
-              .Property(b => b.author_name)
-              .IsRequired();
-
-            modelBuilder.Entity<Books>()
-              .Property(b => b.publisher_name)
-              .IsRequired();
-
-            modelBuilder.Entity<Books>()
-              .Property(b => b.publish_date)
-              .IsRequired();
-
-            modelBuilder.Entity<Books>()
-             .Property(b => b.actual_stock)
-             .IsRequired();
-
-            modelBuilder.Entity<Books>()
-            .Property(b => b.current_stock)
-            .IsRequired();
-            modelBuilder.Entity<Users>()
-           .Property(u => u.Id)
-           .IsRequired();
-
-            modelBuilder.Entity<Users>()
-          .Property(u => u.name)
-          .IsRequired();
-
-            modelBuilder.Entity<Users>()
-          .Property(u => u.surname)
-          .IsRequired();
-
-            modelBuilder.Entity<Users>()
-          .Property(u => u.email)
-          .IsRequired();
-
-            modelBuilder.Entity<Users>()
-         .Property(u => u.password)
-         .IsRequired();
-
-         modelBuilder.Entity<Users>()
-         .Property(u => u.authorization)
-         .IsRequired();
-
-
+          
             modelBuilder.Entity<BooksUsers>().HasKey(x => new { x.BooksId, x.UsersId });
-
 
         }
 

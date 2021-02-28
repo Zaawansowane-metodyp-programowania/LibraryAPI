@@ -11,8 +11,8 @@ namespace LibraryAPI.Models
         public Books Books { get; set; }
         public int UsersId { get; set; }
         public Users Users { get; set; }
-        public DateTime issue_date { get; set; }
-        public DateTime due_date { get; set; }
+        public DateTime IssueDate { get; set; }
+        public DateTime DueDate { get; set; }
 
     }
 }
