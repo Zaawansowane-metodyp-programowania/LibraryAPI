@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryAPI.Models;
+using AutoMapper;
 
 namespace LibraryAPI
 {
@@ -35,6 +36,7 @@ namespace LibraryAPI
             });
             services.AddDbContext<LibraryDBContext>();
             services.AddScoped<LibrarySeeder>();
+            services.AddAutoMapper(this.GetType().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
