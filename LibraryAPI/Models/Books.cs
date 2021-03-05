@@ -20,10 +20,8 @@ namespace LibraryAPI.Models
         public string PublisherName { get; set; }
         [Required]
         public int PublishDate { get; set; }
-      
         public string Language { get; set; }
         public string BookDescription { get; set; }
-        [Required]
         public int UsersId { get; set; }
 
         public virtual Users Users { get; set; }
