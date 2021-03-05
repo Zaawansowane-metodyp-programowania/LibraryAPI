@@ -34,6 +34,8 @@ namespace LibraryAPI.Migrations
                     AuthorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublisherName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublishDate = table.Column<int>(type: "int", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Reservation = table.Column<bool>(type: "bit", nullable: false),
                     Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BookDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UsersId = table.Column<int>(type: "int", nullable: false)

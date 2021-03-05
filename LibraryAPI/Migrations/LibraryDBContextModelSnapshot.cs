@@ -36,6 +36,10 @@ namespace LibraryAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ISBN")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -49,6 +53,9 @@ namespace LibraryAPI.Migrations
                     b.Property<string>("PublisherName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Reservation")
+                        .HasColumnType("bit");
 
                     b.Property<int>("UsersId")
                         .HasColumnType("int");

@@ -12,6 +12,8 @@ namespace LibraryAPI.Dtos
         public string AuthorName { get; set; }
         public string PublisherName { get; set; }
         public int PublishDate { get; set; }
+        public string Category { get; set; }
+        public bool Reservation { get; set; }
         public string Language { get; set; }
         public string BookDescription { get; set; }
 
