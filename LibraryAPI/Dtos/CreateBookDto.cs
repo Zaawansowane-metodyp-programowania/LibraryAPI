@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LibraryAPI.Dtos
 {
-    public class BooksDto
+    public class CreateBookDto
     {
         [Required]
         public string ISBN { get; set; }
@@ -19,14 +19,12 @@ namespace LibraryAPI.Dtos
         public string PublisherName { get; set; }
         [Required]
         public int PublishDate { get; set; }
-        [Required]
         public string Category { get; set; }
         public bool Reservation { get; set; }
         public string Language { get; set; }
-        public string BookDescription { get; set; }
-        public int? UsersId { get; set; }
-
-
+        public string BookDescription { get; set; }      
+        public int? UserId { get; set; }
+       
 
     }
 }

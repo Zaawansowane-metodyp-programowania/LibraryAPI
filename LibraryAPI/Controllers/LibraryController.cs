@@ -25,6 +25,20 @@ namespace LibraryAPI.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost]
+        public ActionResult CreateBook([FromBody] CreateBookDto dto)
+        {
+            var book = _mapper.Map<Books>(dto);
+            //book.UsersId = 1;
+            _dbContext.Books.Add(book);
+            _dbContext.SaveChanges();
+
+            return Created($"api/books/ {book.Id}", null);
+
+        }
+            
+
+
         /// <summary>
         /// Metoda zwracająca wszystkie książki z bazy danych 
         /// </summary>

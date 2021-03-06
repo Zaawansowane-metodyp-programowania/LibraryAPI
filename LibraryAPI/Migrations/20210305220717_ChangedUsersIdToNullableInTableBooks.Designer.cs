@@ -4,14 +4,16 @@ using LibraryAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryAPI.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    partial class LibraryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210305220717_ChangedUsersIdToNullableInTableBooks")]
+    partial class ChangedUsersIdToNullableInTableBooks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +65,9 @@ namespace LibraryAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UsersId")
+                        .IsUnique()
+                        .HasFilter("[UsersId] IS NOT NULL");
 
                     b.ToTable("Books");
                 });
@@ -76,6 +80,9 @@ namespace LibraryAPI.Migrations
                         .UseIdentityColumn();
 
                     b.Property<int>("Authorization")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BookId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -102,8 +109,8 @@ namespace LibraryAPI.Migrations
             modelBuilder.Entity("LibraryAPI.Models.Books", b =>
                 {
                     b.HasOne("LibraryAPI.Models.Users", "Users")
-                        .WithMany("Books")
-                        .HasForeignKey("UsersId");
+                        .WithOne("Books")
+                        .HasForeignKey("LibraryAPI.Models.Books", "UsersId");
 
                     b.Navigation("Users");
                 });
