@@ -8,9 +8,9 @@ using LibraryAPI.Dtos;
 
 namespace LibraryAPI
 {
-    public class LibraryMappingProfile:Profile
+    public class BookMappingProfile:Profile
     {
-        public LibraryMappingProfile()
+        public BookMappingProfile()
         {
             CreateMap<Book, BookDto>();
 

@@ -13,21 +13,27 @@ namespace LibraryAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly LibraryDBContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public UsersController(LibraryDBContext dbContext)
+        public UsersController(LibraryDBContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<User>> GetAll()
+        public ActionResult<IEnumerable<UserDto>> GetAll()
         {
             var users = _dbContext
                 .Users
                 .ToList();
-            return Ok(users);
+
+            var usersDtos = _mapper.Map<List<UserDto>>(users);
+
+            return Ok(usersDtos);
         }
+
         [HttpGet("{id}")]
-        public ActionResult<User> GetById([FromRoute] int id) 
+        public ActionResult<UserDto> GetById([FromRoute] int id) 
         {
             var user = _dbContext
                 .Users
@@ -38,7 +44,8 @@ namespace LibraryAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(user);
+            var userDto = _mapper.Map<UserDto>(user);
+            return Ok(userDto);
         }
     }
 }
