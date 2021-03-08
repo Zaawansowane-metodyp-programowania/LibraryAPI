@@ -24,6 +24,11 @@ namespace LibraryAPI.Controllers
         [HttpPost]
         public ActionResult CreateUser ([FromBody]CreateUserDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = _mapper.Map<User>(dto);
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();

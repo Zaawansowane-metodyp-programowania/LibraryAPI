@@ -28,6 +28,11 @@ namespace LibraryAPI.Controllers
         [HttpPost]
         public ActionResult CreateBook([FromBody] CreateBookDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var book = _mapper.Map<Book>(dto);
             var userId = dto.UserId == 0 ? null : dto.UserId;
             book.UserId = userId;
