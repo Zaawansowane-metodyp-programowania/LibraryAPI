@@ -22,6 +22,19 @@ namespace LibraryAPI.Controllers
             _userService = userService;
         }
 
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+           var isDeleted = _userService.Delete(id);
+
+            if(isDeleted)
+            {
+                return NoContent();
+            }
+
+            return NotFound();
+        }
+
         [HttpPost]
         public ActionResult CreateUser ([FromBody]CreateUserDto dto)
         {

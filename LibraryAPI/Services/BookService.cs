@@ -14,6 +14,7 @@ namespace LibraryAPI.Services
         int Create(CreateBookDto dto);
         IEnumerable<BookDto> GetAll();
         BookDto GetById(int id);
+        bool Delete(int id);
     }
 
     public class BookService : IBookService
@@ -26,6 +27,21 @@ namespace LibraryAPI.Services
             _dbContext = dbContext;
             _mapper = mapper;
         }
+
+        public bool Delete(int id) 
+        {
+            var book = _dbContext
+                .Books
+                .FirstOrDefault(r => r.Id == id);
+
+             if (book is null) return false;
+
+            _dbContext.Books.Remove(book);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
         public BookDto GetById(int id)
         {
             var book = _dbContext

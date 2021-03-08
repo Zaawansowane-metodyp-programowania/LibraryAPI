@@ -26,6 +26,21 @@ namespace LibraryAPI.Controllers
             _bookService = bookService;
         }
 
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+           var isDeleted = _bookService.Delete(id);
+
+            if (isDeleted)
+            {
+                return NoContent();
+            }
+
+            return NotFound();
+
+
+        }
+
         [HttpPost]
         public ActionResult CreateBook([FromBody] CreateBookDto dto)
         {
