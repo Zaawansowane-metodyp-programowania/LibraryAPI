@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LibraryAPI.Models
 {
-    public class Users
+    public class User
     {   [Key]
         public int Id { get; set; }
         [Required]
@@ -19,7 +19,7 @@ namespace LibraryAPI.Models
         public string Password { get; set; }
         [Required]
         public int Authorization { get; set; }
-        public List<Books> Books { get; set; }
+        public List<Book> Books { get; set; }
 
     }
 }

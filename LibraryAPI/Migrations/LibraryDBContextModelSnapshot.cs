@@ -19,7 +19,7 @@ namespace LibraryAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("LibraryAPI.Models.Books", b =>
+            modelBuilder.Entity("LibraryAPI.Models.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,17 +58,17 @@ namespace LibraryAPI.Migrations
                     b.Property<bool>("Reservation")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UsersId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("LibraryAPI.Models.Users", b =>
+            modelBuilder.Entity("LibraryAPI.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,16 +99,16 @@ namespace LibraryAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LibraryAPI.Models.Books", b =>
+            modelBuilder.Entity("LibraryAPI.Models.Book", b =>
                 {
-                    b.HasOne("LibraryAPI.Models.Users", "Users")
+                    b.HasOne("LibraryAPI.Models.User", "Users")
                         .WithMany("Books")
-                        .HasForeignKey("UsersId");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("LibraryAPI.Models.Users", b =>
+            modelBuilder.Entity("LibraryAPI.Models.User", b =>
                 {
                     b.Navigation("Books");
                 });

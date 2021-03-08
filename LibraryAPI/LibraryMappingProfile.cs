@@ -12,9 +12,9 @@ namespace LibraryAPI
     {
         public LibraryMappingProfile()
         {
-            CreateMap<Books, BooksDto>();
+            CreateMap<Book, BookDto>();
 
-            CreateMap<CreateBookDto, Books > ();
+            CreateMap<CreateBookDto, Book > ();
             
 
 

@@ -13,13 +13,13 @@ using AutoMapper;
 namespace LibraryAPI.Controllers
 {
     [Route("api/books")]
-    public class LibraryController : ControllerBase
+    public class BooksController : ControllerBase
     {
         private readonly LibraryDBContext _dbContext;
         private readonly IMapper _mapper;
 
         //Dostęp do kontekstu baz danych
-        public LibraryController(LibraryDBContext dBContext, IMapper mapper)
+        public BooksController(LibraryDBContext dBContext, IMapper mapper)
         {
             _dbContext = dBContext;
             _mapper = mapper;
@@ -28,8 +28,9 @@ namespace LibraryAPI.Controllers
         [HttpPost]
         public ActionResult CreateBook([FromBody] CreateBookDto dto)
         {
-            var book = _mapper.Map<Books>(dto);
-            //book.UsersId = 1;
+            var book = _mapper.Map<Book>(dto);
+            var userId = dto.UserId == 0 ? null : dto.UserId;
+            book.UserId = userId;
             _dbContext.Books.Add(book);
             _dbContext.SaveChanges();
 
@@ -44,20 +45,20 @@ namespace LibraryAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<IEnumerable<BooksDto>> GetAll()
+        public ActionResult<IEnumerable<BookDto>> GetAll()
         {
             var book = _dbContext
                 .Books
                 .ToList();
 
-            var bookDtos = _mapper.Map<List<BooksDto>>(book);
+            var bookDtos = _mapper.Map<List<BookDto>>(book);
            
 
             return Ok(bookDtos);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<BooksDto> GetById([FromRoute]int id)
+        public ActionResult<BookDto> GetById([FromRoute]int id)
         {
             var book = _dbContext
                 .Books
@@ -68,7 +69,7 @@ namespace LibraryAPI.Controllers
                 return NotFound();
             }
 
-            var bookDto = _mapper.Map<BooksDto>(book);
+            var bookDto = _mapper.Map<BookDto>(book);
             return Ok(bookDto);
 
         }

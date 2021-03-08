@@ -6,6 +6,7 @@ using LibraryAPI.Models;
 
 
 
+
 namespace LibraryAPI
 {
     public class LibrarySeeder
@@ -35,11 +36,11 @@ namespace LibraryAPI
 
             }
         }
-        private IEnumerable<Users> GetUsers()
+        private IEnumerable<User> GetUsers()
         {
-            var users = new List<Users>()
+            var users = new List<User>()
                 {
-                    new Users()
+                    new User()
                     {
                         Name ="Karol",
                         Surname = "Kowalski",
@@ -48,7 +49,7 @@ namespace LibraryAPI
                         Authorization=1,
                     },
 
-                    new Users()
+                    new User()
                     {
                         Name = "Marcin",
                         Surname = "Zawada",
@@ -60,11 +61,11 @@ namespace LibraryAPI
             return users;
         }
 
-        private IEnumerable<Books> GetBooks()
+        private IEnumerable<Book> GetBooks()
         {
-            var books = new List<Books>()
+            var books = new List<Book>()
             {
-                new Books()
+                new Book()
                 {
                     ISBN = "978-83-283-0234-1",
                     BookName= "Czysty Kod",
@@ -75,10 +76,10 @@ namespace LibraryAPI
                     Reservation = true,
                     Language = "Polish",
                     BookDescription = "Authorized translation from the English language edition, entitled:Clean Code",
-                    UsersId =2,
+                    UserId =2,
 
                 },
-                new Books()
+                new Book()
                 {
                     ISBN = "978-83-283-6150-8",
                     BookName= "Python. Wprowadzenie. Wydanie V",
@@ -89,7 +90,7 @@ namespace LibraryAPI
                     Reservation = false,
                     Language = "",
                     BookDescription = "",
-                    UsersId =1,
+                    UserId =1,
                 },
             };
             return books;

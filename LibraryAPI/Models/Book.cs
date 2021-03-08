@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-
-namespace LibraryAPI.Dtos
+namespace LibraryAPI.Models
 {
-    public class BooksDto
-    {
+    public class Book
+    {        
+        [Key]
+        public int Id { get; set; }
         [Required]
         public string ISBN { get; set; }
         [Required]
@@ -24,7 +25,12 @@ namespace LibraryAPI.Dtos
         public bool Reservation { get; set; }
         public string Language { get; set; }
         public string BookDescription { get; set; }
-        public int? UsersId { get; set; }
+       
+        public int? UserId { get; set; }
+
+        public virtual User Users { get; set; }
+
+
 
 
 

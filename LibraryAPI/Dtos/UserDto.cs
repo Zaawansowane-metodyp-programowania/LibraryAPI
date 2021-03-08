@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LibraryAPI.Dtos
 {
-    public class UsersDto
+    public class UserDto
     {
 
 
