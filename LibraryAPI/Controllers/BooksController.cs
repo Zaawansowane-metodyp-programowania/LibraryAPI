@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using LibraryAPI.Models;
 using LibraryAPI.Dtos;
 using AutoMapper;
+using LibraryAPI.Services;
 
 
 
@@ -15,14 +16,14 @@ namespace LibraryAPI.Controllers
     [Route("api/books")]
     public class BooksController : ControllerBase
     {
+        private readonly IBookService _bookService;
         private readonly LibraryDBContext _dbContext;
         private readonly IMapper _mapper;
 
-        //Dostęp do kontekstu baz danych
-        public BooksController(LibraryDBContext dBContext, IMapper mapper)
+       
+        public BooksController(IBookService  bookService)
         {
-            _dbContext = dBContext;
-            _mapper = mapper;
+            _bookService = bookService;
         }
 
         [HttpPost]
@@ -33,18 +34,12 @@ namespace LibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var book = _mapper.Map<Book>(dto);
-            var userId = dto.UserId == 0 ? null : dto.UserId;
-            book.UserId = userId;
-            _dbContext.Books.Add(book);
-            _dbContext.SaveChanges();
-
-            return Created($"api/books/ {book.Id}", null);
+           var id = _bookService.Create(dto);
+           
+           return Created($"api/books/ {id}", null);
 
         }
             
-
-
         /// <summary>
         /// Metoda zwracająca wszystkie książki z bazy danych 
         /// </summary>
@@ -52,31 +47,23 @@ namespace LibraryAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<BookDto>> GetAll()
         {
-            var book = _dbContext
-                .Books
-                .ToList();
-
-            var bookDtos = _mapper.Map<List<BookDto>>(book);
+            var booksDtos = _bookService.GetAll();
            
 
-            return Ok(bookDtos);
+            return Ok(booksDtos);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<BookDto> GetById([FromRoute]int id)
+        public ActionResult<BookDto> Get([FromRoute]int id)
         {
-            var book = _dbContext
-                .Books
-                .FirstOrDefault(r => r.Id == id);
+            var book = _bookService.GetById(id);
 
-                if (book is null)
+            if (book is null) 
             {
                 return NotFound();
             }
 
-            var bookDto = _mapper.Map<BookDto>(book);
-            return Ok(bookDto);
-
+            return Ok(book);
         }
     }
 }

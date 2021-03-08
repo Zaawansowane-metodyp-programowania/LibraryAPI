@@ -6,19 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using LibraryAPI.Models;
 using LibraryAPI.Dtos;
 using AutoMapper;
+using LibraryAPI.Services;
 
 namespace LibraryAPI.Controllers
 {
     [Route("api/users")]
     public class UsersController : ControllerBase
     {
+        private readonly IUserService _userService;
         private readonly LibraryDBContext _dbContext;
         private readonly IMapper _mapper;
 
-        public UsersController(LibraryDBContext dbContext, IMapper mapper)
+        public UsersController(IUserService userService)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -29,39 +30,30 @@ namespace LibraryAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = _mapper.Map<User>(dto);
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
+           var id =  _userService.Create(dto);
 
-            return Created($"/api/users/{user.Id}", null);
+            return Created($"/api/users/{id}", null);
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<UserDto>> GetAll()
         {
-            var users = _dbContext
-                .Users
-                .ToList();
-
-            var usersDtos = _mapper.Map<List<UserDto>>(users);
+            var usersDtos = _userService.GetAll();
 
             return Ok(usersDtos);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<UserDto> GetById([FromRoute] int id) 
+        public ActionResult<UserDto> Get([FromRoute] int id) 
         {
-            var user = _dbContext
-                .Users
-                .FirstOrDefault(u => u.Id == id);
-
+            var user = _userService.GetById(id);
+           
             if(user is null) 
             {
                 return NotFound();
             }
 
-            var userDto = _mapper.Map<UserDto>(user);
-            return Ok(userDto);
+            return Ok(user);
         }
     }
 }
