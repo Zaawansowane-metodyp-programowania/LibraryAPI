@@ -20,6 +20,17 @@ namespace LibraryAPI.Controllers
             _dbContext = dbContext;
             _mapper = mapper;
         }
+
+        [HttpPost]
+        public ActionResult CreateUser ([FromBody]CreateUserDto dto)
+        {
+            var user = _mapper.Map<User>(dto);
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+
+            return Created($"/api/users/{user.Id}", null);
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<UserDto>> GetAll()
         {

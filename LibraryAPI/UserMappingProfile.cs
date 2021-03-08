@@ -13,6 +13,8 @@ namespace LibraryAPI
         public UserMappingProfile()
         {
             CreateMap<User, UserDto>();
+
+            CreateMap<CreateUserDto, User>();
         }
     }
 }
