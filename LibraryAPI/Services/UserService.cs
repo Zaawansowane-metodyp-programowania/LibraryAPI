@@ -16,6 +16,7 @@ namespace LibraryAPI.Services
         IEnumerable<UserDto> GetAll();
         UserDto GetById(int id);
         bool Delete(int id);
+        bool Update(int id, UpdateUserDto dto);
     }
 
     public class UserService : IUserService
@@ -26,6 +27,24 @@ namespace LibraryAPI.Services
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+
+        public bool Update(int id, UpdateUserDto dto)
+        {
+            var user = _dbContext
+               .Users
+               .FirstOrDefault(u => u.Id == id);
+
+            if (user is null) 
+                return false;
+
+            user.Name = dto.Name;
+            user.Surname = dto.Surname;
+            user.Email = dto.Email;
+
+            _dbContext.SaveChanges();
+
+            return true;
         }
 
         public bool Delete (int id) 

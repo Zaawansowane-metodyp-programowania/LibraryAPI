@@ -14,12 +14,28 @@ namespace LibraryAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly LibraryDBContext _dbContext;
-        private readonly IMapper _mapper;
+       
 
         public UsersController(IUserService userService)
         {
             _userService = userService;
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult Update([FromBody] UpdateUserDto dto, [FromRoute]int id)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var isUpdate = _userService.Update(id, dto);
+            if(!isUpdate)
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]

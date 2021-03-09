@@ -15,6 +15,7 @@ namespace LibraryAPI.Services
         IEnumerable<BookDto> GetAll();
         BookDto GetById(int id);
         bool Delete(int id);
+        bool Update(int id, UpdateBookDto dto);
     }
 
     public class BookService : IBookService
@@ -26,6 +27,32 @@ namespace LibraryAPI.Services
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+        
+        public bool Update(int id, UpdateBookDto dto) 
+        {
+            var book = _dbContext
+                .Books
+                .FirstOrDefault(r => r.Id == id);
+
+            if (book is null)
+                return false;
+
+            book.ISBN = dto.ISBN;
+            book.BookName = dto.BookName;
+            book.AuthorName = dto.AuthorName;
+            book.PublisherName = dto.PublisherName;
+            book.PublishDate = dto.PublishDate;
+            book.Category = dto.Category;
+            book.Reservation = dto.Reservation;
+            book.Language = dto.Language;
+            book.BookDescription = dto.BookDescription;
+
+            _dbContext.SaveChanges();
+
+            return true;
+
+
         }
 
         public bool Delete(int id) 

@@ -17,13 +17,26 @@ namespace LibraryAPI.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
-        private readonly LibraryDBContext _dbContext;
-        private readonly IMapper _mapper;
-
        
         public BooksController(IBookService  bookService)
         {
             _bookService = bookService;
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult Update([FromBody] UpdateBookDto dto, [FromRoute]int id) 
+        {
+            if (!ModelState.IsValid) 
+            {
+                return BadRequest(ModelState);
+            }
+
+           var isUpdated = _bookService.Update(id, dto);
+            if(!isUpdated)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
 
         [HttpDelete("{id}")]
