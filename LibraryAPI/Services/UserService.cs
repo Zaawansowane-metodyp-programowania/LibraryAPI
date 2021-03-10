@@ -63,8 +63,6 @@ namespace LibraryAPI.Services
             _dbContext.Users.Remove(user);
             _dbContext.SaveChanges();
 
-           
-
         }
 
         public UserDto GetById(int id)
