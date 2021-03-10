@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using LibraryAPI.Models;
 using AutoMapper;
 using LibraryAPI.Services;
+using LibraryAPI.Middleware;
+
 
 namespace LibraryAPI
 {
@@ -40,7 +42,7 @@ namespace LibraryAPI
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IUserService, UserService>();
-
+            services.AddScoped<ErrorHandlingMiddleware>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +55,7 @@ namespace LibraryAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraryAPI v1"));
             }
-
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseRouting();

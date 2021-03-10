@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using LibraryAPI.Dtos;
 using LibraryAPI.Models;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace LibraryAPI.Services
 {
@@ -22,11 +23,13 @@ namespace LibraryAPI.Services
     {
         private readonly LibraryDBContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<BookService> _logger;
 
-        public BookService(LibraryDBContext dbContext, IMapper mapper)
+        public BookService(LibraryDBContext dbContext, IMapper mapper, ILogger<BookService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _logger = logger;
         }
         
         public bool Update(int id, UpdateBookDto dto) 
@@ -57,6 +60,8 @@ namespace LibraryAPI.Services
 
         public bool Delete(int id) 
         {
+            _logger.LogError($"Book with id: {id} DELETE action invoked");
+
             var book = _dbContext
                 .Books
                 .FirstOrDefault(r => r.Id == id);
