@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using LibraryAPI.Dtos;
 using LibraryAPI.Models;
 using AutoMapper;
-
+using LibraryAPI.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace LibraryAPI.Services
 {
@@ -15,50 +16,54 @@ namespace LibraryAPI.Services
         int Create(CreateUserDto dto);
         IEnumerable<UserDto> GetAll();
         UserDto GetById(int id);
-        bool Delete(int id);
-        bool Update(int id, UpdateUserDto dto);
+        void Delete(int id);
+        void Update(int id, UpdateUserDto dto);
     }
 
     public class UserService : IUserService
     {
         private readonly LibraryDBContext _dbContext;
         private readonly IMapper _mapper;
-        public UserService(LibraryDBContext dbContext, IMapper mapper)
+        private readonly ILogger<UserService> _logger;
+
+        public UserService(LibraryDBContext dbContext, IMapper mapper,ILogger<UserService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+           _logger = logger;
         }
 
-        public bool Update(int id, UpdateUserDto dto)
+        public void Update(int id, UpdateUserDto dto)
         {
             var user = _dbContext
                .Users
                .FirstOrDefault(u => u.Id == id);
 
-            if (user is null) 
-                return false;
+            if (user is null)
+                throw new NotFoundException("User not found");
 
             user.Name = dto.Name;
             user.Surname = dto.Surname;
             user.Email = dto.Email;
 
             _dbContext.SaveChanges();
-
-            return true;
+ 
         }
 
-        public bool Delete (int id) 
+        public void Delete (int id) 
         {
+            _logger.LogError($"User with id {id} DELETE action invoked");
             var user = _dbContext
                 .Users
                 .FirstOrDefault(u => u.Id == id);
 
-            if (user is null) return false;
+            if (user is null)
+                throw new NotFoundException("User not found");
 
             _dbContext.Users.Remove(user);
             _dbContext.SaveChanges();
 
-            return true;
+           
 
         }
 
@@ -68,7 +73,8 @@ namespace LibraryAPI.Services
                 .Users
                 .FirstOrDefault(u => u.Id == id);
 
-            if (user is null) return null;
+            if (user is null)
+                throw new NotFoundException("User not found");
 
             var result = _mapper.Map<UserDto>(user);
             return result;

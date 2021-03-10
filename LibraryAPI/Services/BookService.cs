@@ -7,6 +7,7 @@ using LibraryAPI.Dtos;
 using LibraryAPI.Models;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using LibraryAPI.Exceptions;
 
 namespace LibraryAPI.Services
 {
@@ -15,8 +16,8 @@ namespace LibraryAPI.Services
         int Create(CreateBookDto dto);
         IEnumerable<BookDto> GetAll();
         BookDto GetById(int id);
-        bool Delete(int id);
-        bool Update(int id, UpdateBookDto dto);
+        void Delete(int id);
+        void Update(int id, UpdateBookDto dto);
     }
 
     public class BookService : IBookService
@@ -32,14 +33,14 @@ namespace LibraryAPI.Services
             _logger = logger;
         }
         
-        public bool Update(int id, UpdateBookDto dto) 
+        public void Update(int id, UpdateBookDto dto) 
         {
             var book = _dbContext
                 .Books
                 .FirstOrDefault(r => r.Id == id);
 
             if (book is null)
-                return false;
+                throw new NotFoundException("Book not found");
 
             book.ISBN = dto.ISBN;
             book.BookName = dto.BookName;
@@ -53,12 +54,9 @@ namespace LibraryAPI.Services
 
             _dbContext.SaveChanges();
 
-            return true;
-
-
         }
 
-        public bool Delete(int id) 
+        public void Delete(int id) 
         {
             _logger.LogError($"Book with id: {id} DELETE action invoked");
 
@@ -66,12 +64,12 @@ namespace LibraryAPI.Services
                 .Books
                 .FirstOrDefault(r => r.Id == id);
 
-             if (book is null) return false;
+             if (book is null)
+                throw new NotFoundException("Book not found");
 
             _dbContext.Books.Remove(book);
             _dbContext.SaveChanges();
 
-            return true;
         }
 
         public BookDto GetById(int id)
@@ -80,7 +78,8 @@ namespace LibraryAPI.Services
                 .Books
                 .FirstOrDefault(r => r.Id == id);
 
-            if (book is null) return null;
+            if (book is null)
+                throw new NotFoundException("Book not found");
 
             var result = _mapper.Map<BookDto>(book);
             return result;

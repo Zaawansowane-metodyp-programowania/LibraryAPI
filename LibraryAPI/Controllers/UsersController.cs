@@ -11,6 +11,7 @@ using LibraryAPI.Services;
 namespace LibraryAPI.Controllers
 {
     [Route("api/users")]
+    [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -24,29 +25,16 @@ namespace LibraryAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateUserDto dto, [FromRoute]int id)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var isUpdate = _userService.Update(id, dto);
-            if(!isUpdate)
-            {
-                return NotFound();
-            }
-
+         
+            _userService.Update(id, dto);
+           
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-           var isDeleted = _userService.Delete(id);
-
-            if(isDeleted)
-            {
-                return NoContent();
-            }
+           _userService.Delete(id);
 
             return NotFound();
         }
@@ -54,10 +42,6 @@ namespace LibraryAPI.Controllers
         [HttpPost]
         public ActionResult CreateUser ([FromBody]CreateUserDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
            var id =  _userService.Create(dto);
 
@@ -76,11 +60,6 @@ namespace LibraryAPI.Controllers
         public ActionResult<UserDto> Get([FromRoute] int id) 
         {
             var user = _userService.GetById(id);
-           
-            if(user is null) 
-            {
-                return NotFound();
-            }
 
             return Ok(user);
         }

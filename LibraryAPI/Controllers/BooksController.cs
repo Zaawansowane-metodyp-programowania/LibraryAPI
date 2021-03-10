@@ -14,6 +14,7 @@ using LibraryAPI.Services;
 namespace LibraryAPI.Controllers
 {
     [Route("api/books")]
+    [ApiController]
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -26,28 +27,16 @@ namespace LibraryAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateBookDto dto, [FromRoute]int id) 
         {
-            if (!ModelState.IsValid) 
-            {
-                return BadRequest(ModelState);
-            }
 
-           var isUpdated = _bookService.Update(id, dto);
-            if(!isUpdated)
-            {
-                return NotFound();
-            }
+            _bookService.Update(id, dto);
+            
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-           var isDeleted = _bookService.Delete(id);
-
-            if (isDeleted)
-            {
-                return NoContent();
-            }
+            _bookService.Delete(id);
 
             return NotFound();
 
@@ -57,11 +46,6 @@ namespace LibraryAPI.Controllers
         [HttpPost]
         public ActionResult CreateBook([FromBody] CreateBookDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
            var id = _bookService.Create(dto);
            
            return Created($"api/books/ {id}", null);
@@ -85,11 +69,6 @@ namespace LibraryAPI.Controllers
         public ActionResult<BookDto> Get([FromRoute]int id)
         {
             var book = _bookService.GetById(id);
-
-            if (book is null) 
-            {
-                return NotFound();
-            }
 
             return Ok(book);
         }
