@@ -33,6 +33,15 @@ namespace LibraryAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("reservation/{id}")]
+        public ActionResult UpdateReservation([FromBody] UpdateBookDto dto, [FromRoute] int id)
+        {
+
+            _bookService.UpdateReservationById(id, dto);
+
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
@@ -71,6 +80,13 @@ namespace LibraryAPI.Controllers
             var book = _bookService.GetById(id);
 
             return Ok(book);
+        }
+
+        [HttpGet("user/{userId}")]
+        public ActionResult<List<BookDto>> GetBooks([FromRoute]int userId)
+        {
+            var result = _bookService.GetAllbyUser(userId);
+            return Ok(result);
         }
     }
 }

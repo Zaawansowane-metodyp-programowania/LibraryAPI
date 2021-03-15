@@ -18,6 +18,8 @@ namespace LibraryAPI.Services
         BookDto GetById(int id);
         void Delete(int id);
         void Update(int id, UpdateBookDto dto);
+        List<BookDto> GetAllbyUser(int UserId);
+        void UpdateReservationById(int id, UpdateBookDto dto);
     }
 
     public class BookService : IBookService
@@ -55,6 +57,24 @@ namespace LibraryAPI.Services
             _dbContext.SaveChanges();
 
         }
+
+
+        public void UpdateReservationById(int id, UpdateBookDto dto)
+        {
+            var book = _dbContext
+                .Books
+                .FirstOrDefault(r => r.Id == id);
+
+            if (book is null)
+                throw new NotFoundException("Book not found");
+
+           
+            book.Reservation = dto.Reservation;
+            
+            _dbContext.SaveChanges();
+
+        }
+
 
         public void Delete(int id) 
         {
@@ -103,6 +123,20 @@ namespace LibraryAPI.Services
             _dbContext.SaveChanges();
 
             return book.Id;
+        }
+
+        public List<BookDto> GetAllbyUser (int UserId)
+        {
+            var user = _dbContext
+                .Users
+                .Include(r => r.Books)
+                .FirstOrDefault(r => r.Id == UserId);
+            if (user is null)
+                throw new NotFoundException("User not found");
+
+            var bookDtos = _mapper.Map<List<BookDto>>(user.Books);
+
+            return bookDtos;
         }
 
     }

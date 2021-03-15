@@ -9,17 +9,17 @@ namespace LibraryAPI.Dtos
     public class UpdateBookDto
     {
 
-        [Required]
+        
         public string ISBN { get; set; }
-        [Required]
+        
         public string BookName { get; set; }
-        [Required]
+        
         public string AuthorName { get; set; }
-        [Required]
+        
         public string PublisherName { get; set; }
-        [Required]
+        
         public int PublishDate { get; set; }
-        [Required]
+        
         public string Category { get; set; }
         public bool Reservation { get; set; }
         public string Language { get; set; }
