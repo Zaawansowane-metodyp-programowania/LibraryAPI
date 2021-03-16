@@ -7,10 +7,8 @@ REST API aplikacji bibliotecznej, utworzonej w ASP.net core 5.
 | ------------- | ------------ | 
 | ../api/books  | Książki - wszystkie  | 
 | ../api/books/{id} | Książki - pojedyncza wartość  | 
-|   | Książki - ilość dostępnych książek (dla danego ID)  | 
-|   | Dla Usera - pobranie listy wypożyczonych książek (z datą zwrotu)  | 
-|   | User (pracownik) - pobranie listy wypożyczonych książek dla ID usera  | 
-|   | User (pracownik) - pobranie listy wypożyczonych książek po terminie  | 
+| ../api/books/user/{userid}  | Książki - ilość dostępnych książek (dla danego ID)  | 
+| ../api/books/user/{userid} | User (pracownik) - pobranie listy wypożyczonych książek dla ID usera  | 
 | ../api/users/{id}  | User (pracownik) - pobranie danych po ID Usera | 
 | ../api/users | User (pracownik) - pobranie wszystkich userów |
 
@@ -19,10 +17,9 @@ REST API aplikacji bibliotecznej, utworzonej w ASP.net core 5.
 | ../api/users/{id}  | User (pracownik) - zmiana Imienia, nazwiska, emaila Usera  | 
 | ../api/books/{id} | User (pracownik) - edycja książki  | 
 |   | User (pracownik) - zmiana hasła  | 
-|   | User (pracownik) - zmiana daty oddania książki na podstawie ID usera  | 
 |   | User - zmiana hasła  | 
-|   | User (pracownik) - potwierdza wypoż./zwrot książki  | 
-|   | User - rezerwacja  | 
+| ../api/books/{id} | User (pracownik) - potwierdza wypoż./zwrot książki  | 
+| ../api/books/reservation/{id} | User - rezerwacja  | 
 
 | Wywołania POST  | Opis | 
 | ------------- | ------------ | 
@@ -34,4 +31,4 @@ REST API aplikacji bibliotecznej, utworzonej w ASP.net core 5.
 | ------------- | ------------ | 
 | ../api/books/{id}  | User (pracownik) - usuwanie książki  | 
 | ../api/users{id} | User (pracownik) - usuwanie Usera  | 
-|   | User (admin) - usuwanie User (pracownik)  | 
+|   | User (admin) - usuwanie User (pracownik)  |   | 
