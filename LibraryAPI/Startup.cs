@@ -42,6 +42,8 @@ namespace LibraryAPI
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountService, AccountService >();
+
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
         }
