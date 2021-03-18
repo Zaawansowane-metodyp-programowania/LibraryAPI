@@ -15,7 +15,7 @@ using LibraryAPI.Models;
 using AutoMapper;
 using LibraryAPI.Services;
 using LibraryAPI.Middleware;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace LibraryAPI
 {
@@ -43,7 +43,7 @@ namespace LibraryAPI
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountService, AccountService >();
-
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher <User>>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
         }

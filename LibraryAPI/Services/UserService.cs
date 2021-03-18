@@ -8,6 +8,7 @@ using LibraryAPI.Models;
 using AutoMapper;
 using LibraryAPI.Exceptions;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace LibraryAPI.Services
 {
@@ -25,12 +26,14 @@ namespace LibraryAPI.Services
         private readonly LibraryDBContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(LibraryDBContext dbContext, IMapper mapper,ILogger<UserService> logger)
+        public UserService(LibraryDBContext dbContext, IMapper mapper,ILogger<UserService> logger, IPasswordHasher<User> passwordHasher)
         {
             _dbContext = dbContext;
             _mapper = mapper;
-           _logger = logger;
+            _logger = logger;
+            _passwordHasher = passwordHasher;
         }
 
         public void Update(int id, UpdateUserDto dto)
@@ -92,6 +95,8 @@ namespace LibraryAPI.Services
         {
 
             var user = _mapper.Map<User>(dto);
+            var hashedPassword = _passwordHasher.HashPassword(user, dto.Password);
+            user.Password = hashedPassword;
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
 
