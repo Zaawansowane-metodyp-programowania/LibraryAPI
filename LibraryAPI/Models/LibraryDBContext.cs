@@ -12,11 +12,18 @@ namespace LibraryAPI.Models
             "Server=tcp:libraryapi1.database.windows.net,1433;Initial Catalog=LibraryApi;Persist Security Info=False;User ID=adminlibrary;Password=library123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
         
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
-          
+            modelBuilder.Entity<User>()
+                  .Property(u => u.Email)
+                  .IsRequired();
+
+            modelBuilder.Entity<Role>()
+                .Property(u => u.Name)
+                .IsRequired();
            
 
         }

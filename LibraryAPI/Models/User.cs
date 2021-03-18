@@ -19,8 +19,9 @@ namespace LibraryAPI.Models
         [Required]
         public string Password { get; set; }
         [Required]
-        public int Authorization { get; set; }
+        public int RoleId { get; set; }
         public List<Book> Books { get; set; }
+        public virtual Role Role { get; set; }
 
     }
 }

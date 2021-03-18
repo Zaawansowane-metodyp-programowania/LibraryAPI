@@ -20,6 +20,13 @@ namespace LibraryAPI
         {
             if (_dbContext.Database.CanConnect())
             {
+                if (!_dbContext.Roles.Any())
+                {
+                    var roles = GetRoles();
+                    _dbContext.Roles.AddRange(roles);
+                    _dbContext.SaveChanges();
+                }
+
                 if (!_dbContext.Users.Any())
                 {
                     var users = GetUsers();
@@ -36,6 +43,26 @@ namespace LibraryAPI
 
             }
         }
+        private IEnumerable<Role> GetRoles()
+        {
+            var roles = new List<Role>()
+            {
+                new Role()
+                {
+                    Name = "User"
+                },
+                new Role()
+                {
+                    Name = "Employee"
+                },
+                new Role()
+                {
+                    Name = "Admin"
+                },
+            };
+
+            return roles;
+        }
         private IEnumerable<User> GetUsers()
         {
             var users = new List<User>()
@@ -46,7 +73,7 @@ namespace LibraryAPI
                         Surname = "Kowalski",
                         Email = "karolek123@o2.pl",
                         Password = "t32423",
-                        Authorization=1,
+                        RoleId=1,
                     },
 
                     new User()
@@ -55,7 +82,7 @@ namespace LibraryAPI
                         Surname = "Zawada",
                         Email = "zawadzior125@wp.pl",
                         Password = "43423",
-                        Authorization=2,
+                        RoleId=2,
                     }
                 };
             return users;

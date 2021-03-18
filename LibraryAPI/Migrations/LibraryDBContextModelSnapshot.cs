@@ -68,15 +68,28 @@ namespace LibraryAPI.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("LibraryAPI.Models.User", b =>
+            modelBuilder.Entity("LibraryAPI.Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("Authorization")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("LibraryAPI.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -90,11 +103,16 @@ namespace LibraryAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -106,6 +124,17 @@ namespace LibraryAPI.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("LibraryAPI.Models.User", b =>
+                {
+                    b.HasOne("LibraryAPI.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("LibraryAPI.Models.User", b =>
