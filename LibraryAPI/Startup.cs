@@ -16,6 +16,10 @@ using AutoMapper;
 using LibraryAPI.Services;
 using LibraryAPI.Middleware;
 using Microsoft.AspNetCore.Identity;
+using FluentValidation;
+using LibraryAPI.Dtos;
+using LibraryAPI.Dtos.Validators;
+using FluentValidation.AspNetCore;
 
 namespace LibraryAPI
 {
@@ -32,7 +36,7 @@ namespace LibraryAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LibraryAPI", Version = "v1" });
@@ -44,6 +48,7 @@ namespace LibraryAPI
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountService, AccountService >();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher <User>>();
+            services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
         }
