@@ -13,7 +13,7 @@ namespace LibraryAPI.Controllers
 {
     [Route("api/books")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -71,9 +71,9 @@ namespace LibraryAPI.Controllers
         
         [HttpGet]
         //[AllowAnonymous]
-        public ActionResult<IEnumerable<BookDto>> GetAll()
+        public ActionResult<IEnumerable<BookDto>> GetAll([FromQuery]string searchPhrase)
         {
-            var booksDtos = _bookService.GetAll();
+            var booksDtos = _bookService.GetAll(searchPhrase);
            
 
             return Ok(booksDtos);
