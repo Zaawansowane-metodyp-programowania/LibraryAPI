@@ -7,14 +7,13 @@ using LibraryAPI.Models;
 using LibraryAPI.Dtos;
 using AutoMapper;
 using LibraryAPI.Services;
-
-
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryAPI.Controllers
 {
     [Route("api/books")]
     [ApiController]
+    [Authorize]
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -25,6 +24,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Employee")]
         public ActionResult Update([FromBody] UpdateBookDto dto, [FromRoute]int id) 
         {
 
@@ -34,6 +34,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPut("reservation/{id}")]
+        [Authorize(Roles = "Admin,Employee")]
         public ActionResult UpdateReservation([FromBody] UpdateBookDto dto, [FromRoute] int id)
         {
 
@@ -43,16 +44,18 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Employee")]
         public ActionResult Delete([FromRoute] int id)
         {
             _bookService.Delete(id);
 
-            return NotFound();
+            return NoContent();
 
 
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Employee")]
         public ActionResult CreateBook([FromBody] CreateBookDto dto)
         {
            var id = _bookService.Create(dto);
@@ -65,7 +68,9 @@ namespace LibraryAPI.Controllers
         /// Metoda zwracająca wszystkie książki z bazy danych 
         /// </summary>
         /// <returns></returns>
+        
         [HttpGet]
+        //[AllowAnonymous]
         public ActionResult<IEnumerable<BookDto>> GetAll()
         {
             var booksDtos = _bookService.GetAll();
@@ -83,6 +88,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpGet("user/{userId}")]
+        [Authorize(Roles = "Admin,Employee")]
         public ActionResult<List<BookDto>> GetBooks([FromRoute]int userId)
         {
             var result = _bookService.GetAllbyUser(userId);

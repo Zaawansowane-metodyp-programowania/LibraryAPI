@@ -78,7 +78,7 @@ namespace LibraryAPI.Services
 
         public void Delete(int id) 
         {
-            _logger.LogError($"Book with id: {id} DELETE action invoked");
+            _logger.LogInformation($"Book with id: {id} DELETE action invoked");
 
             var book = _dbContext
                 .Books

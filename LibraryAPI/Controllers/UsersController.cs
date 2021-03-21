@@ -7,11 +7,13 @@ using LibraryAPI.Models;
 using LibraryAPI.Dtos;
 using AutoMapper;
 using LibraryAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryAPI.Controllers
 {
     [Route("api/users")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -30,13 +32,13 @@ namespace LibraryAPI.Controllers
            
             return Ok();
         }
-
+       
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
            _userService.Delete(id);
 
-            return NotFound();
+            return  NoContent();
         }
 
         [HttpPost]

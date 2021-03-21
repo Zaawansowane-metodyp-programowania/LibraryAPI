@@ -55,7 +55,7 @@ namespace LibraryAPI.Services
 
         public void Delete (int id) 
         {
-            _logger.LogError($"User with id {id} DELETE action invoked");
+            _logger.LogInformation($"User with id {id} DELETE action invoked");
             var user = _dbContext
                 .Users
                 .FirstOrDefault(u => u.Id == id);
