@@ -14,7 +14,7 @@ namespace LibraryAPI.Services
     public interface IBookService
     {
         int Create(CreateBookDto dto);
-        IEnumerable<BookDto> GetAll(string searchPhrase);
+        PagedResult<BookDto> GetAll(BookQuery query);
         BookDto GetById(int id);
         void Delete(int id);
         void Update(int id, UpdateBookDto dto);
@@ -104,19 +104,28 @@ namespace LibraryAPI.Services
             var result = _mapper.Map<BookDto>(book);
             return result;
         }
-        public IEnumerable<BookDto> GetAll(string searchPhrase)
+        public PagedResult<BookDto> GetAll(BookQuery query)
         {
-            var books = _dbContext
+            var baseQuery = _dbContext
                 .Books
-                .Where(r => searchPhrase == null || (r.BookName.ToLower().Contains(searchPhrase.ToLower())
-                            || r.PublisherName.ToLower().Contains(searchPhrase.ToLower())
-                            || r.AuthorName.ToLower().Contains(searchPhrase.ToLower())
-                            || r.BookDescription.ToLower().Contains(searchPhrase.ToLower())))
+                .Where(r => query.SearchPhrase == null || (r.BookName.ToLower().Contains(query.SearchPhrase.ToLower())
+                            || r.PublisherName.ToLower().Contains(query.SearchPhrase.ToLower())
+                            || r.AuthorName.ToLower().Contains(query.SearchPhrase.ToLower())
+                            || r.BookDescription.ToLower().Contains(query.SearchPhrase.ToLower())));
+
+
+
+                var books = baseQuery
+                .Skip(query.PageSize * (query.PageNumber - 1))
+                .Take(query.PageSize)
                 .ToList();
+            var totalItemsCount = baseQuery.Count();
             
             var booksDtos = _mapper.Map<List<BookDto>>(books);
 
-            return booksDtos;
+            var result = new PagedResult<BookDto>(booksDtos,totalItemsCount , query.PageSize, query.PageNumber);
+
+            return result;
         }
         public int Create(CreateBookDto dto)
         {

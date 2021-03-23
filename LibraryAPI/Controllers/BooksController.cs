@@ -24,7 +24,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin,Employee")]
+        //[Authorize(Roles = "Admin,Employee")]
         public ActionResult Update([FromBody] UpdateBookDto dto, [FromRoute]int id) 
         {
 
@@ -34,7 +34,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPut("reservation/{id}")]
-        [Authorize(Roles = "Admin,Employee")]
+        //[Authorize(Roles = "Admin,Employee")]
         public ActionResult UpdateReservation([FromBody] UpdateBookDto dto, [FromRoute] int id)
         {
 
@@ -44,7 +44,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin,Employee")]
+       // [Authorize(Roles = "Admin,Employee")]
         public ActionResult Delete([FromRoute] int id)
         {
             _bookService.Delete(id);
@@ -55,7 +55,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Employee")]
+        //[Authorize(Roles = "Admin,Employee")]
         public ActionResult CreateBook([FromBody] CreateBookDto dto)
         {
            var id = _bookService.Create(dto);
@@ -71,9 +71,9 @@ namespace LibraryAPI.Controllers
         
         [HttpGet]
         //[AllowAnonymous]
-        public ActionResult<IEnumerable<BookDto>> GetAll([FromQuery]string searchPhrase)
+        public ActionResult<IEnumerable<BookDto>> GetAll([FromQuery]BookQuery query )
         {
-            var booksDtos = _bookService.GetAll(searchPhrase);
+            var booksDtos = _bookService.GetAll(query);
            
 
             return Ok(booksDtos);
@@ -88,7 +88,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize(Roles = "Admin,Employee")]
+        //[Authorize(Roles = "Admin,Employee")]
         public ActionResult<List<BookDto>> GetBooks([FromRoute]int userId)
         {
             var result = _bookService.GetAllbyUser(userId);
