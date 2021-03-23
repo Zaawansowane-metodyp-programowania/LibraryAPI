@@ -75,11 +75,24 @@ namespace LibraryAPI
             services.AddScoped <IValidator<BookQuery>, BookQueryValidator > ();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("FrontEndClient", builder =>
+
+                    builder.AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowAnyOrigin()
+                            
+
+
+                         );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,LibrarySeeder seeder)
         {
+            app.UseCors("FrontEndClient");
             seeder.Seed();
             if (env.IsDevelopment())
             {
