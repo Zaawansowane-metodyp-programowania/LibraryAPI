@@ -8,6 +8,7 @@ using LibraryAPI.Models;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using LibraryAPI.Exceptions;
+using System.Linq.Expressions;
 
 namespace LibraryAPI.Services
 {
@@ -113,7 +114,23 @@ namespace LibraryAPI.Services
                             || r.AuthorName.ToLower().Contains(query.SearchPhrase.ToLower())
                             || r.BookDescription.ToLower().Contains(query.SearchPhrase.ToLower())));
 
+               if(!string.IsNullOrEmpty(query.SortBy))
+            {
+                var columnsSelectors = new Dictionary<string, Expression<Func<Book, object>>>
+                {
+                    { nameof(Book.BookName), r => r.BookName },
+                    { nameof(Book.BookDescription), r => r.BookDescription },
+                    { nameof(Book.Category), r => r.Category},
+                    { nameof(Book.PublisherName), r => r.PublisherName},
+                    { nameof(Book.PublishDate), r => r.PublishDate},
 
+                };
+                var selectedColumn = columnsSelectors[query.SortBy];
+
+               baseQuery =  query.SortDirection == SortDirection.ASC 
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
 
                 var books = baseQuery
                 .Skip(query.PageSize * (query.PageNumber - 1))
