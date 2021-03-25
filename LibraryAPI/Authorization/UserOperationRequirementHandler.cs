@@ -24,11 +24,7 @@ namespace LibraryAPI.Authorization
             {
                 context.Succeed(requirement);
             }
-            else
-            {
-                throw new ForbidException();
-            }
-
+            
             return Task.CompletedTask;
         }
     }

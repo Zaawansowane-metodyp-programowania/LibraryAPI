@@ -55,6 +55,9 @@ namespace LibraryAPI.Services
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, user,
                new UserOperationRequirement(ResourceOperation.Update)).Result;
 
+            if (!authorizationResult.Succeeded)
+                throw new ForbidException();
+
             user.Name = dto.Name;
             user.Surname = dto.Surname;
             user.Email = dto.Email;
@@ -71,6 +74,9 @@ namespace LibraryAPI.Services
 
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, userToModify,
                 new UserOperationRequirement(ResourceOperation.Update)).Result;
+
+            if (!authorizationResult.Succeeded)
+                throw new ForbidException();
 
             var userRole = _userContextService.GetUserRole;
 
