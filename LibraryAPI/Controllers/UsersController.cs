@@ -32,7 +32,7 @@ namespace LibraryAPI.Controllers
            
             return Ok();
         }
-        [Authorize(Roles = "Admin,Employee")]
+       
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
@@ -51,6 +51,7 @@ namespace LibraryAPI.Controllers
             return Created($"/api/users/{id}", null);
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet]
         public ActionResult<IEnumerable<UserDto>> GetAll()
         {

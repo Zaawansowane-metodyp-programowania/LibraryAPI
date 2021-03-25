@@ -113,6 +113,9 @@ namespace LibraryAPI.Services
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, user,
                 new UserOperationRequirement(ResourceOperation.Delete)).Result;
 
+            if (!authorizationResult.Succeeded)
+                throw new ForbidException();
+
             _dbContext.Users.Remove(user);
             _dbContext.SaveChanges();
 
