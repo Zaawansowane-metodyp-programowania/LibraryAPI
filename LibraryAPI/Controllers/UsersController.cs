@@ -13,7 +13,6 @@ namespace LibraryAPI.Controllers
 {
     [Route("api/users")]
     [ApiController]
-   // [Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -32,7 +31,7 @@ namespace LibraryAPI.Controllers
            
             return Ok();
         }
-       
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
@@ -41,6 +40,7 @@ namespace LibraryAPI.Controllers
             return  NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult CreateUser ([FromBody]CreateUserDto dto)
         {
@@ -58,12 +58,20 @@ namespace LibraryAPI.Controllers
             return Ok(usersDtos);
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("{id}")]
         public ActionResult<UserDto> Get([FromRoute] int id) 
         {
             var user = _userService.GetById(id);
 
             return Ok(user);
+        }
+        [HttpPatch("changePassword/{id}")]
+        public ActionResult ChangePassword([FromBody] ChangePasswordDto dto, [FromRoute] int id)
+        {
+            _userService.ChangePassword(id, dto);
+
+            return Ok();
         }
     }
 }

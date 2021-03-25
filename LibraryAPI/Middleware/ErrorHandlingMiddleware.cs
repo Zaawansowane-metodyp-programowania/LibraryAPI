@@ -32,7 +32,11 @@ namespace LibraryAPI.Middleware
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(notFoundException.Message);
             }
-            catch(Exception e)
+            catch (ForbidException forbidException)
+            {
+                context.Response.StatusCode = 403;
+            }
+            catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
 

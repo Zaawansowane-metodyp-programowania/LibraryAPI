@@ -22,6 +22,8 @@ using LibraryAPI.Dtos.Validators;
 using FluentValidation.AspNetCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LibraryAPI.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryAPI
 {
@@ -75,6 +77,9 @@ namespace LibraryAPI
             services.AddScoped <IValidator<BookQuery>, BookQueryValidator > ();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
+            services.AddScoped<IAuthorizationHandler, UserOperationRequirementHandler>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserContextService, UserContextService>();
             services.AddCors(options =>
             {
                 options.AddPolicy("FrontEndClient", builder =>
