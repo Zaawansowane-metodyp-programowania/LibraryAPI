@@ -8,27 +8,29 @@ REST API aplikacji bibliotecznej, utworzonej w ASP.net core 5.
 | ../api/books  | Książki - wszystkie  | 
 | ../api/books/{id} | Książki - pojedyncza wartość  | 
 | ../api/books/user/{userid}  | Książki - ilość dostępnych książek (dla danego ID)  | 
-| ../api/books/user/{userid} | User (pracownik) - pobranie listy wypożyczonych książek dla ID usera  | 
-| ../api/users/{id}  | User (pracownik) - pobranie danych po ID Usera | 
-| ../api/users | User (pracownik) - pobranie wszystkich userów |
+| ../api/books/user/{userid} | User (pracownik, admin) - pobranie listy wypożyczonych książek dla ID usera  | 
+| ../api/users/{id}  | User (pracownik,admin) - pobranie danych po ID Usera | 
+| ../api/users | User (pracownik,admin) - pobranie wszystkich userów |
 
 | Wywołania PUT  | Opis | 
 | ------------- | ------------ | 
-| ../api/users/{id}  | User (pracownik) - zmiana Imienia, nazwiska, emaila Usera  | 
-| ../api/books/{id} | User (pracownik) - edycja książki  | 
-|   | User (pracownik) - zmiana hasła  | 
-|   | User - zmiana hasła  | 
-| ../api/books/{id} | User (pracownik) - potwierdza wypoż./zwrot książki  | 
+| ../api/users/{id}  | User  - zmiana Imienia, nazwiska, emaila (każdy dla siebie, admin może dla wszystkich) | 
+| ../api/books/{id} | User (pracownik,admin) - edycja książki  | 
+| ../api/books/{id} | User (pracownik,admin) - potwierdza wypoż./zwrot książki  | 
 | ../api/books/reservation/{id} | User - rezerwacja  | 
+
+| Wywołania PATCH  | Opis | 
+| ------------- | ------------ | 
+|../api/users/changePassword/{id}  | - zmiana hasła (każdy dla siebie, admin może dla wszystkich)  |   | 
 
 | Wywołania POST  | Opis | 
 | ------------- | ------------ | 
-| ../api/books  | User (pracownik) - dodanie nowej książki  | 
-| ../api/users | User (pracownik) - dodanie Usera  | 
-|   | User (admin) - dodanie nowego Usera (pracownik)  | 
+| ../api/books  | User (pracownik,admin) - dodanie nowej książki  | 
+| ../api/users | User (admin) - dodanie nowego użytkownika, pracownika lub admina | 
+| ../api/account/register | rejestracja Usera  |
+| ../api​/account​/login    |  logowanie użytkownika |
 
 | Wywołania DELETE  | Opis | 
 | ------------- | ------------ | 
-| ../api/books/{id}  | User (pracownik) - usuwanie książki  | 
-| ../api/users{id} | User (pracownik) - usuwanie Usera  | 
-|   | User (admin) - usuwanie User (pracownik)  |   | 
+| ../api/books/{id}  | User (pracownik,admin) - usuwanie książki  | 
+| ../api/users{id} | Usunać może każdy siebie, admin może wszystkich | 
