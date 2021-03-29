@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+//using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +24,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using LibraryAPI.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using NSwag;
+using NSwag.Generation.Processors.Security;
+
 
 namespace LibraryAPI
 {
@@ -62,10 +65,23 @@ namespace LibraryAPI
             });
 
             services.AddControllers().AddFluentValidation();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerDocument(document =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LibraryAPI", Version = "v1" });
+                document.Title = "Cookbook API Documentation";
+                document.DocumentName = "swagger";
+                document.OperationProcessors.Add(new OperationSecurityScopeProcessor("jwt"));
+                document.DocumentProcessors.Add(new SecurityDefinitionAppender("jwt", new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "JWT Token - remember to add 'Bearer ' before the token",
+                }));
             });
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "LibraryAPI", Version = "v1" });
+            //});
             services.AddDbContext<LibraryDBContext>();
             services.AddScoped<LibrarySeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
@@ -110,11 +126,26 @@ namespace LibraryAPI
             app.UseAuthentication();
             app.UseHttpsRedirection();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => 
+            app.UseOpenApi(options =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraryAPI v1");
-           });
+                options.DocumentName = "swagger";
+                options.Path = "/swagger/v1/swagger.json";
+                options.PostProcess = (document, _) =>
+                {
+                    document.Schemes.Add(OpenApiSchema.Https);
+                };
+            });
+
+            app.UseSwaggerUi3(options =>
+            {
+                options.DocumentPath = "/swagger/v1/swagger.json";
+            });
+
+            // app.UseSwagger();
+            // app.UseSwaggerUI(c => 
+            // {
+            //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraryAPI v1");
+            //});
 
             app.UseRouting();
             app.UseAuthorization();
