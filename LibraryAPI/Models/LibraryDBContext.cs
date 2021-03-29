@@ -18,8 +18,9 @@ namespace LibraryAPI.Models
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
-                  .Property(u => u.Email)
-                  .IsRequired();
+                  .HasIndex(u => u.Email)
+                  .IsUnique();
+
 
             modelBuilder.Entity<Role>()
                 .Property(u => u.Name)
