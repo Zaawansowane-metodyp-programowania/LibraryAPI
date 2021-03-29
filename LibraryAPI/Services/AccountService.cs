@@ -17,7 +17,7 @@ namespace LibraryAPI.Services
     public interface IAccountService
     {
         void RegisterUser(RegisterUserDto dto);
-        string GenerateJwt(LoginDto dto);
+        public  LoginVm GenerateJwt (LoginDto dto);
     }
     public class AccountService : IAccountService
     {
@@ -43,25 +43,25 @@ namespace LibraryAPI.Services
                 RoleId = dto.RoleId
             };
 
-           var hashedPassword = _passwordHasher.HashPassword(newUser, dto.Password);
+            var hashedPassword = _passwordHasher.HashPassword(newUser, dto.Password);
 
             newUser.Password = hashedPassword;
             _context.Users.Add(newUser);
             _context.SaveChanges();
         }
-        public string GenerateJwt(LoginDto dto)
+        public LoginVm GenerateJwt(LoginDto dto)
         {
             var user = _context.Users
                 .Include(u => u.Role)
                 .FirstOrDefault(u => u.Email == dto.Email);
 
-            if(user is null)
+            if (user is null)
             {
                 throw new BadRequestException("Invalid username or password");
             }
 
-           var result = _passwordHasher.VerifyHashedPassword(user, user.Password, dto.Password);
-            if(result == PasswordVerificationResult.Failed)
+            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, dto.Password);
+            if (result == PasswordVerificationResult.Failed)
             {
                 throw new BadRequestException("Invalid username or password");
             }
@@ -84,7 +84,16 @@ namespace LibraryAPI.Services
                 signingCredentials: cred);
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            return tokenHandler.WriteToken(token);
-        }
+            var tokenpepe = tokenHandler.WriteToken(token);
+
+            var loginVm = new LoginVm
+            {
+                Id = user.Id,
+                Token = tokenpepe
+            };
+
+
+            return loginVm;
+        } 
     }
 }
