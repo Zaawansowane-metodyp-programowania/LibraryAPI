@@ -78,20 +78,18 @@ namespace LibraryAPI
                     Description = "JWT Token - remember to add 'Bearer ' before the token",
                 }));
             });
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "LibraryAPI", Version = "v1" });
-            //});
+
             services.AddDbContext<LibraryDBContext>();
             services.AddScoped<LibrarySeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAccountService, AccountService >();
-            services.AddScoped<IPasswordHasher<User>, PasswordHasher <User>>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
             services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
-            services.AddScoped <IValidator<BookQuery>, BookQueryValidator > ();
+            services.AddScoped<IValidator<BookQuery>, BookQueryValidator>();
+            services.AddScoped<IValidator<ChangePasswordDto>, ChangePasswordValidator>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
             services.AddScoped<IAuthorizationHandler, UserOperationRequirementHandler>();
@@ -104,7 +102,7 @@ namespace LibraryAPI
                     builder.AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowAnyOrigin()
-                            
+
 
 
                          );
@@ -141,11 +139,7 @@ namespace LibraryAPI
                 options.DocumentPath = "/swagger/v1/swagger.json";
             });
 
-            // app.UseSwagger();
-            // app.UseSwaggerUI(c => 
-            // {
-            //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraryAPI v1");
-            //});
+
 
             app.UseRouting();
             app.UseAuthorization();
