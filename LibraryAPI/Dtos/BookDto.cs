@@ -9,6 +9,8 @@ namespace LibraryAPI.Dtos
 {
     public class BookDto
     {
+        [Key]
+        public int Id { get; set; }
         [Required]
         public string ISBN { get; set; }
         [Required]
