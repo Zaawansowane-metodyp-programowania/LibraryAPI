@@ -17,7 +17,7 @@ namespace LibraryAPI.Dtos.Validators
 
             RuleFor(x => x.Surname)
                 .NotEmpty();
-                
+
             RuleFor(x => x.Email)
                 .NotEmpty()
                 .EmailAddress();
@@ -29,14 +29,14 @@ namespace LibraryAPI.Dtos.Validators
             RuleFor(x => x.Email)
                 .Custom((value, context) =>
                 {
-                var emailInUse = dbContext.Users.Any(u => u.Email == value);
-                if (emailInUse)
-                {
-                    context.AddFailure("Email", "That email is taken");
-                }
+                    var emailInUse = dbContext.Users.Any(u => u.Email == value);
+                    if (emailInUse)
+                    {
+                        context.AddFailure("Email", "That email is taken");
+                    }
 
 
-            });
+                });
 
         }
     }

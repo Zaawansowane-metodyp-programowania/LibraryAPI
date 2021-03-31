@@ -24,7 +24,7 @@ namespace LibraryAPI.Authorization
             {
                 context.Succeed(requirement);
             }
-            
+
             return Task.CompletedTask;
         }
     }

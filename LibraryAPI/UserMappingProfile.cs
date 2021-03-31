@@ -8,7 +8,7 @@ using LibraryAPI.Dtos;
 
 namespace LibraryAPI
 {
-    public class UserMappingProfile: Profile
+    public class UserMappingProfile : Profile
     {
         public UserMappingProfile()
         {

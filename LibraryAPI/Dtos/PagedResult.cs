@@ -14,13 +14,13 @@ namespace LibraryAPI.Dtos
         public int TotalItemsCount { get; set; }
 
 
-        public PagedResult(List<T> items, int  totalCount, int pageSize, int pageNumber)
+        public PagedResult(List<T> items, int totalCount, int pageSize, int pageNumber)
         {
             Items = items;
             TotalItemsCount = totalCount;
             ItemFrom = pageSize * (pageNumber - 1) + 1;
             ItemsTo = ItemFrom + pageSize - 1;
-            TotalPages =(int)Math.Ceiling (totalCount /(double) pageSize);
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
         }
     }
 }

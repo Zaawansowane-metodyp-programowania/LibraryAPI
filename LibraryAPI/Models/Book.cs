@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LibraryAPI.Models
 {
     public class Book
-    {        
+    {
         [Key]
         public int Id { get; set; }
         [Required]
@@ -25,7 +25,7 @@ namespace LibraryAPI.Models
         public bool Reservation { get; set; }
         public string Language { get; set; }
         public string BookDescription { get; set; }
-       
+
         public int? UserId { get; set; }
 
         public virtual User Users { get; set; }

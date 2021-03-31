@@ -33,7 +33,7 @@ namespace LibraryAPI.Services
         private readonly IUserContextService _userContextService;
         private readonly IAuthorizationService _authorizationService;
 
-        public UserService(LibraryDBContext dbContext, IMapper mapper,ILogger<UserService> logger, IPasswordHasher<User> passwordHasher, IUserContextService userContextService, IAuthorizationService authorizationService)
+        public UserService(LibraryDBContext dbContext, IMapper mapper, ILogger<UserService> logger, IPasswordHasher<User> passwordHasher, IUserContextService userContextService, IAuthorizationService authorizationService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -63,7 +63,7 @@ namespace LibraryAPI.Services
             user.Email = dto.Email;
 
             _dbContext.SaveChanges();
- 
+
         }
         public void ChangePassword(int id, ChangePasswordDto dto)
         {
@@ -100,7 +100,7 @@ namespace LibraryAPI.Services
             _dbContext.SaveChanges();
         }
 
-        public void Delete (int id) 
+        public void Delete(int id)
         {
             _logger.LogInformation($"User with id {id} DELETE action invoked");
             var user = _dbContext
@@ -153,7 +153,7 @@ namespace LibraryAPI.Services
 
 
             int[] validRoleId = { 1, 2, 3 };
-            if (validRoleId.Contains(user.RoleId))            
+            if (validRoleId.Contains(user.RoleId))
             {
                 _dbContext.Users.Add(user);
                 _dbContext.SaveChanges();

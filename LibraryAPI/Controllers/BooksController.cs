@@ -17,19 +17,19 @@ namespace LibraryAPI.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
-       
-        public BooksController(IBookService  bookService)
+
+        public BooksController(IBookService bookService)
         {
             _bookService = bookService;
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin,Employee")]
-        public ActionResult Update([FromBody] UpdateBookDto dto, [FromRoute]int id) 
+        public ActionResult Update([FromBody] UpdateBookDto dto, [FromRoute] int id)
         {
 
             _bookService.Update(id, dto);
-            
+
             return Ok();
         }
 
@@ -58,28 +58,28 @@ namespace LibraryAPI.Controllers
         [Authorize(Roles = "Admin,Employee")]
         public ActionResult CreateBook([FromBody] CreateBookDto dto)
         {
-           var id = _bookService.Create(dto);
-           
-           return Created($"api/books/ {id}", null);
+            var id = _bookService.Create(dto);
+
+            return Created($"api/books/ {id}", null);
 
         }
-            
+
         /// <summary>
         /// Metoda zwracająca wszystkie książki z bazy danych 
         /// </summary>
         /// <returns></returns>
-        
+
         [HttpGet]
-        public ActionResult<IEnumerable<BookDto>> GetAll([FromQuery]BookQuery query )
+        public ActionResult<IEnumerable<BookDto>> GetAll([FromQuery] BookQuery query)
         {
             var booksDtos = _bookService.GetAll(query);
-           
+
 
             return Ok(booksDtos);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<BookDto> Get([FromRoute]int id)
+        public ActionResult<BookDto> Get([FromRoute] int id)
         {
             var book = _bookService.GetById(id);
 
@@ -88,7 +88,7 @@ namespace LibraryAPI.Controllers
 
         [HttpGet("user/{userId}")]
         [Authorize(Roles = "Admin,Employee")]
-        public ActionResult<List<BookDto>> GetBooks([FromRoute]int userId)
+        public ActionResult<List<BookDto>> GetBooks([FromRoute] int userId)
         {
             var result = _bookService.GetAllbyUser(userId);
             return Ok(result);

@@ -35,8 +35,8 @@ namespace LibraryAPI.Services
             _mapper = mapper;
             _logger = logger;
         }
-        
-        public void Update(int id, UpdateBookDto dto) 
+
+        public void Update(int id, UpdateBookDto dto)
         {
             var book = _dbContext
                 .Books
@@ -69,15 +69,15 @@ namespace LibraryAPI.Services
             if (book is null)
                 throw new NotFoundException("Book not found");
 
-           
+
             book.Reservation = dto.Reservation;
-            
+
             _dbContext.SaveChanges();
 
         }
 
 
-        public void Delete(int id) 
+        public void Delete(int id)
         {
             _logger.LogInformation($"Book with id: {id} DELETE action invoked");
 
@@ -85,7 +85,7 @@ namespace LibraryAPI.Services
                 .Books
                 .FirstOrDefault(r => r.Id == id);
 
-             if (book is null)
+            if (book is null)
                 throw new NotFoundException("Book not found");
 
             _dbContext.Books.Remove(book);
@@ -114,7 +114,7 @@ namespace LibraryAPI.Services
                             || r.AuthorName.ToLower().Contains(query.SearchPhrase.ToLower())
                             || r.BookDescription.ToLower().Contains(query.SearchPhrase.ToLower())));
 
-               if(!string.IsNullOrEmpty(query.SortBy))
+            if (!string.IsNullOrEmpty(query.SortBy))
             {
                 var columnsSelectors = new Dictionary<string, Expression<Func<Book, object>>>
                 {
@@ -127,20 +127,20 @@ namespace LibraryAPI.Services
                 };
                 var selectedColumn = columnsSelectors[query.SortBy];
 
-               baseQuery =  query.SortDirection == SortDirection.ASC 
-                    ? baseQuery.OrderBy(selectedColumn)
-                    : baseQuery.OrderByDescending(selectedColumn);
+                baseQuery = query.SortDirection == SortDirection.ASC
+                     ? baseQuery.OrderBy(selectedColumn)
+                     : baseQuery.OrderByDescending(selectedColumn);
             }
 
-                var books = baseQuery
-                .Skip(query.PageSize * (query.PageNumber - 1))
-                .Take(query.PageSize)
-                .ToList();
+            var books = baseQuery
+            .Skip(query.PageSize * (query.PageNumber - 1))
+            .Take(query.PageSize)
+            .ToList();
             var totalItemsCount = baseQuery.Count();
-            
+
             var booksDtos = _mapper.Map<List<BookDto>>(books);
 
-            var result = new PagedResult<BookDto>(booksDtos,totalItemsCount , query.PageSize, query.PageNumber);
+            var result = new PagedResult<BookDto>(booksDtos, totalItemsCount, query.PageSize, query.PageNumber);
 
             return result;
         }
@@ -155,7 +155,7 @@ namespace LibraryAPI.Services
             return book.Id;
         }
 
-        public List<BookDto> GetAllbyUser (int UserId)
+        public List<BookDto> GetAllbyUser(int UserId)
         {
             var user = _dbContext
                 .Users

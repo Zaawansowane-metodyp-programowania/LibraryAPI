@@ -17,7 +17,7 @@ namespace LibraryAPI.Services
     public interface IAccountService
     {
         void RegisterUser(RegisterUserDto dto);
-        public  LoginVm GenerateJwt (LoginDto dto);
+        public LoginVm GenerateJwt(LoginDto dto);
     }
     public class AccountService : IAccountService
     {
@@ -94,6 +94,6 @@ namespace LibraryAPI.Services
 
 
             return loginVm;
-        } 
+        }
     }
 }

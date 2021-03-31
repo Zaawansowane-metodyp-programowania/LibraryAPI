@@ -18,7 +18,7 @@ namespace LibraryAPI.Dtos.Validators
             RuleFor(r => r.PageNumber).GreaterThanOrEqualTo(1);
             RuleFor(r => r.PageSize).Custom((value, context) =>
             {
-                if(!allowedPageSizes.Contains(value))
+                if (!allowedPageSizes.Contains(value))
                 {
                     context.AddFailure("PageSize", $"PageSize must in [{string.Join(",", allowedPageSizes)}]");
                 }

@@ -17,7 +17,7 @@ namespace LibraryAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-       
+
 
         public UsersController(IUserService userService)
         {
@@ -25,28 +25,28 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update([FromBody] UpdateUserDto dto, [FromRoute]int id)
+        public ActionResult Update([FromBody] UpdateUserDto dto, [FromRoute] int id)
         {
-         
+
             _userService.Update(id, dto);
-           
+
             return Ok();
         }
-       
+
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-           _userService.Delete(id);
+            _userService.Delete(id);
 
-            return  NoContent();
+            return NoContent();
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult CreateUser ([FromBody]CreateUserDto dto)
+        public ActionResult CreateUser([FromBody] CreateUserDto dto)
         {
 
-           var id =  _userService.Create(dto);
+            var id = _userService.Create(dto);
 
             return Created($"/api/users/{id}", null);
         }
@@ -62,7 +62,7 @@ namespace LibraryAPI.Controllers
 
         [Authorize(Roles = "Admin,Employee")]
         [HttpGet("{id}")]
-        public ActionResult<UserDto> Get([FromRoute] int id) 
+        public ActionResult<UserDto> Get([FromRoute] int id)
         {
             var user = _userService.GetById(id);
 

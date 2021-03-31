@@ -25,9 +25,9 @@ namespace LibraryAPI.Middleware
             _stopWatch.Stop();
 
             var elapsedMiliseconds = _stopWatch.ElapsedMilliseconds;
-            if(elapsedMiliseconds / 1000 > 4)
+            if (elapsedMiliseconds / 1000 > 4)
             {
-                var message = 
+                var message =
                     $"Request[{context.Request.Method}] at {context.Request.Path} took {elapsedMiliseconds} ms";
 
                 _logger.LogInformation(message);
