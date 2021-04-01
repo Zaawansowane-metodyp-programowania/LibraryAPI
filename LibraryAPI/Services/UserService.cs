@@ -130,6 +130,12 @@ namespace LibraryAPI.Services
             if (user is null)
                 throw new NotFoundException("User not found");
 
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, user,
+               new UserOperationRequirement(ResourceOperation.Read)).Result;
+
+            if (!authorizationResult.Succeeded)
+                throw new ForbidException();
+
             var result = _mapper.Map<UserDto>(user);
             return result;
         }

@@ -60,7 +60,7 @@ namespace LibraryAPI.Controllers
             return Ok(usersDtos);
         }
 
-        [Authorize(Roles = "Admin,Employee")]
+
         [HttpGet("{id}")]
         public ActionResult<UserDto> Get([FromRoute] int id)
         {

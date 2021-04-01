@@ -13,14 +13,16 @@ namespace LibraryAPI.Authorization
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, UserOperationRequirement requirement, User user)
         {
-            if (requirement.ResourceOperation == ResourceOperation.Read)
+
+            var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var role = context.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+
+            if (user.Id.ToString() == userId || role == "Admin")
             {
                 context.Succeed(requirement);
             }
 
-            var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var role = context.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
-            if (user.Id.ToString() == userId || role == "Admin")
+            if (requirement.ResourceOperation == ResourceOperation.Read && role == "Employee")
             {
                 context.Succeed(requirement);
             }
