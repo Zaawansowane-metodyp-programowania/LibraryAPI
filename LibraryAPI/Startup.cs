@@ -67,7 +67,7 @@ namespace LibraryAPI
             services.AddControllers().AddFluentValidation();
             services.AddSwaggerDocument(document =>
             {
-                document.Title = "Cookbook API Documentation";
+                document.Title = "Library API Documentation";
                 document.DocumentName = "swagger";
                 document.OperationProcessors.Add(new OperationSecurityScopeProcessor("jwt"));
                 document.DocumentProcessors.Add(new SecurityDefinitionAppender("jwt", new OpenApiSecurityScheme
