@@ -89,7 +89,9 @@ namespace LibraryAPI.Services
             var loginVm = new LoginVm
             {
                 Id = user.Id,
+                RoleId = user.RoleId,
                 Token = tokenpepe
+
             };
 
 
