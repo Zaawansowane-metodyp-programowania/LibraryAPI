@@ -91,7 +91,6 @@ namespace LibraryAPI.Services
                 Id = user.Id,
                 RoleId = user.RoleId,
                 Token = tokenpepe
-
             };
 
 

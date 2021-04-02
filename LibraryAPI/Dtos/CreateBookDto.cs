@@ -23,7 +23,6 @@ namespace LibraryAPI.Dtos
         public bool Reservation { get; set; }
         public string Language { get; set; }
         public string BookDescription { get; set; }
-
         public int? UserId { get; set; }
 
 
