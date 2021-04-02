@@ -17,6 +17,8 @@ namespace LibraryAPI.Dtos
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        [Required]
+        public int RoleId { get; set; }
 
     }
 }
