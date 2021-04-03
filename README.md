@@ -17,11 +17,12 @@ REST API aplikacji bibliotecznej, utworzonej w ASP.net core 5.
 | ../api/users/{id}  | User  - zmiana Imienia, nazwiska, emaila (każdy dla siebie, admin może dla wszystkich) | 
 | ../api/books/{id} | User (pracownik,admin) - edycja książki  | 
 | ../api/books/{id} | User (pracownik,admin) - potwierdza wypoż./zwrot książki  | 
-| ../api/books/reservation/{id} | User - rezerwacja  | 
+
 
 | Wywołania PATCH  | Opis | 
 | ------------- | ------------ | 
 |../api/users/changePassword/{id}  | zmiana hasła (każdy dla siebie, admin może dla wszystkich)  |   | 
+| ../api/books/reservation/{id} | User - rezerwacja  | 
 
 | Wywołania POST  | Opis | 
 | ------------- | ------------ | 
