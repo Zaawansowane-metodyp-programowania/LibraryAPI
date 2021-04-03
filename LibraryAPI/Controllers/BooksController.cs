@@ -33,9 +33,9 @@ namespace LibraryAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("reservation/{id}")]
+        [HttpPatch("reservation/{id}")]
         [Authorize(Roles = "Admin,Employee")]
-        public ActionResult UpdateReservation([FromBody] UpdateBookDto dto, [FromRoute] int id)
+        public ActionResult UpdateReservation([FromBody] UpdateBookReservationDto dto, [FromRoute] int id)
         {
 
             _bookService.UpdateReservationById(id, dto);

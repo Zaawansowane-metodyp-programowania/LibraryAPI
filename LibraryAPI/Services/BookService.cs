@@ -20,7 +20,7 @@ namespace LibraryAPI.Services
         void Delete(int id);
         void Update(int id, UpdateBookDto dto);
         List<BookDto> GetAllbyUser(int UserId);
-        void UpdateReservationById(int id, UpdateBookDto dto);
+        void UpdateReservationById(int id, UpdateBookReservationDto dto);
     }
 
     public class BookService : IBookService
@@ -60,7 +60,7 @@ namespace LibraryAPI.Services
         }
 
 
-        public void UpdateReservationById(int id, UpdateBookDto dto)
+        public void UpdateReservationById(int id, UpdateBookReservationDto dto)
         {
             var book = _dbContext
                 .Books
