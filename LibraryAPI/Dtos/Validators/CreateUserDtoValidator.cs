@@ -23,9 +23,13 @@ namespace LibraryAPI.Dtos.Validators
                 .NotEmpty()
                 .EmailAddress();
 
-            RuleFor(x => x.Password).MinimumLength(6);
+            RuleFor(x => x.Password)
+                .NotEmpty()
+                .MinimumLength(6);
 
-            RuleFor(x => x.ConfirmPassword).Equal(e => e.Password);
+            RuleFor(x => x.ConfirmPassword)
+                .NotEmpty()
+                .Equal(e => e.Password);
 
             RuleFor(x => x.RoleId)
                 .NotEmpty();
