@@ -51,7 +51,6 @@ namespace LibraryAPI.Services
             book.PublisherName = dto.PublisherName;
             book.PublishDate = dto.PublishDate;
             book.Category = dto.Category;
-            book.Reservation = dto.Reservation;
             book.Language = dto.Language;
             book.BookDescription = dto.BookDescription;
 
