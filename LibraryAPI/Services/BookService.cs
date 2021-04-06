@@ -21,6 +21,7 @@ namespace LibraryAPI.Services
         void Update(int id, UpdateBookDto dto);
         List<BookDto> GetAllbyUser(int UserId);
         void UpdateReservationById(int id, UpdateBookReservationDto dto);
+        void BorrowBookById(int id, BorrowBookDto dto);
     }
 
     public class BookService : IBookService
@@ -70,6 +71,21 @@ namespace LibraryAPI.Services
 
 
             book.Reservation = dto.Reservation;
+
+            _dbContext.SaveChanges();
+
+        }
+
+        public void BorrowBookById(int id, BorrowBookDto dto)
+        {
+            var book = _dbContext
+                .Books
+                .FirstOrDefault(r => r.Id == id);
+
+            if (book is null)
+                throw new NotFoundException("Book not found");
+
+            book.UserId = dto.UserId;
 
             _dbContext.SaveChanges();
 

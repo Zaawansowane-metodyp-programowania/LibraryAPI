@@ -43,6 +43,16 @@ namespace LibraryAPI.Controllers
             return Ok();
         }
 
+
+        [HttpPatch("borrow/{id}")]
+        public ActionResult BorrowBook([FromBody] BorrowBookDto dto, [FromRoute] int id)
+        {
+
+            _bookService.BorrowBookById(id, dto);
+
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin,Employee")]
         public ActionResult Delete([FromRoute] int id)
