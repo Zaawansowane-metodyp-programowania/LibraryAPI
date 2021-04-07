@@ -9,6 +9,8 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using LibraryAPI.Exceptions;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
+using LibraryAPI.Authorization;
 
 namespace LibraryAPI.Services
 {
@@ -29,12 +31,16 @@ namespace LibraryAPI.Services
         private readonly LibraryDBContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<BookService> _logger;
+        private readonly IUserContextService _userContextService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public BookService(LibraryDBContext dbContext, IMapper mapper, ILogger<BookService> logger)
+        public BookService(LibraryDBContext dbContext, IMapper mapper, ILogger<BookService> logger,IUserContextService userContextService,IAuthorizationService authorizationService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
+            _userContextService = userContextService;
+            _authorizationService = authorizationService;
         }
 
         public void Update(int id, UpdateBookDto dto)
@@ -178,6 +184,12 @@ namespace LibraryAPI.Services
                 .FirstOrDefault(r => r.Id == UserId);
             if (user is null)
                 throw new NotFoundException("User not found");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, user,
+               new UserOperationRequirement(ResourceOperation.Read)).Result;
+
+            if (!authorizationResult.Succeeded)
+                throw new ForbidException();
 
             var bookDtos = _mapper.Map<List<BookDto>>(user.Books);
 
