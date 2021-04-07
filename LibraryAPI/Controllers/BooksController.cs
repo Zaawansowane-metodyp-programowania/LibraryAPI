@@ -34,7 +34,6 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPatch("reservation/{id}")]
-        [Authorize(Roles = "Admin,Employee")]
         public ActionResult UpdateReservation([FromBody] UpdateBookReservationDto dto, [FromRoute] int id)
         {
 
@@ -45,6 +44,7 @@ namespace LibraryAPI.Controllers
 
 
         [HttpPatch("borrow/{id}")]
+        [Authorize(Roles = "Admin,Employee")]
         public ActionResult BorrowBook([FromBody] BorrowBookDto dto, [FromRoute] int id)
         {
 
@@ -97,7 +97,6 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize(Roles = "Admin,Employee")]
         public ActionResult<List<BookDto>> GetBooks([FromRoute] int userId)
         {
             var result = _bookService.GetAllbyUser(userId);
