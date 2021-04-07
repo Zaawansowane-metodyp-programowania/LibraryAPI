@@ -8,7 +8,7 @@ REST API aplikacji bibliotecznej, utworzonej w ASP.net core 5.
 | ../api/books  | Książki - wszystkie  | 
 | ../api/books/{id} | Książki - pojedyncza wartość  | 
 | ../api/books/user/{userid}  | Książki - ilość dostępnych książek (dla danego ID)  | 
-| ../api/books/user/{userid} | User (pracownik, admin) - pobranie listy wypożyczonych książek dla ID usera  | 
+| ../api/books/user/{userid} | User (pracownik i admin dla wszystkich, zwykły użytkownik dla siebie) - pobranie listy wypożyczonych książek dla ID usera  | 
 | ../api/users/{id}  | User - pobranie danych po ID Usera (zwykły użytkownik tylko siebie, admin i pracownik wszystkich) | 
 | ../api/users | User (pracownik,admin) - pobranie wszystkich userów |
 
