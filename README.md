@@ -22,7 +22,8 @@ REST API aplikacji bibliotecznej, utworzonej w ASP.net core 5.
 | Wywołania PATCH  | Opis | 
 | ------------- | ------------ | 
 |../api/users/changePassword/{id}  | zmiana hasła (każdy dla siebie, admin może dla wszystkich)  |   | 
-| ../api/books/reservation/{id} | User - rezerwacja  | 
+|../api/books/reservation/{id} | User - rezerwacja  | 
+|../api/books/borrow/{id} | Pracownik - zwrot/wypożyczenie ksiązki dla użytkownika |
 
 | Wywołania POST  | Opis | 
 | ------------- | ------------ | 
