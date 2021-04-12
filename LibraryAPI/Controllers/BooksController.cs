@@ -53,6 +53,16 @@ namespace LibraryAPI.Controllers
             return Ok();
         }
 
+        [HttpPatch("return/{id}")]
+        [Authorize(Roles = "Admin,Employee")]
+        public ActionResult ReturnBook([FromRoute] int id)
+        {
+
+            _bookService.ReturnBookById(id);
+
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin,Employee")]
         public ActionResult Delete([FromRoute] int id)

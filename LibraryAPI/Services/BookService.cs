@@ -24,6 +24,7 @@ namespace LibraryAPI.Services
         List<BookDto> GetAllbyUser(int UserId);
         void UpdateReservationById(int id, UpdateBookReservationDto dto);
         void BorrowBookById(int id, BorrowBookDto dto);
+        void ReturnBookById(int id);
     }
 
     public class BookService : IBookService
@@ -91,12 +92,45 @@ namespace LibraryAPI.Services
             if (book is null)
                 throw new NotFoundException("Book not found");
 
+            if (book.UserId != null)
+                throw new BadRequestException("The book is currently on loan");
+
+            var userId = dto.UserId;
+
+            if (userId is null)
+                throw new ForbidException();
+
+            var user = _dbContext.Users.Include(x => x.Books)
+                .FirstOrDefault(x => x.Id == userId);
+
+            if (user is null)
+                throw new NotFoundException("User not found");
+
+            if (user.Books.Count > 5)
+                throw new BadRequestException("User can borrow only 5 books");
+
             book.UserId = dto.UserId;
 
+            _dbContext.Books.Update(book);
             _dbContext.SaveChanges();
 
         }
 
+
+        public void ReturnBookById(int id)
+        {
+            var book = _dbContext
+                .Books
+                .FirstOrDefault(r => r.Id == id);
+
+            if (book is null)
+                throw new NotFoundException("Book not found");
+
+            book.UserId = null;
+
+            _dbContext.Books.Update(book);
+            _dbContext.SaveChanges();
+        }
 
         public void Delete(int id)
         {
