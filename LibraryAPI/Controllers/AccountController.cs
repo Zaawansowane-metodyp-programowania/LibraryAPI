@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryAPI.Dtos;
 using LibraryAPI.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 namespace LibraryAPI.Controllers
 {
@@ -18,6 +20,9 @@ namespace LibraryAPI.Controllers
             _accountService = accountService;
         }
         [HttpPost("register")]
+        [Description("Register new user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
         {
             _accountService.RegisterUser(dto);
@@ -25,6 +30,9 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPost("login")]
+        [Description("Login user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Login([FromBody] LoginDto dto)
         {
             var token = _accountService.GenerateJwt(dto);

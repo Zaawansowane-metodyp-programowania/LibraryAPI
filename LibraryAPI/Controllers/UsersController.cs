@@ -8,6 +8,8 @@ using LibraryAPI.Dtos;
 using AutoMapper;
 using LibraryAPI.Services;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel;
+using Microsoft.AspNetCore.Http;
 
 namespace LibraryAPI.Controllers
 {
@@ -25,6 +27,11 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Description("Update user by id")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult Update([FromBody] UpdateUserDto dto, [FromRoute] int id)
         {
 
@@ -34,6 +41,11 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Description("Delete user by id")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult Delete([FromRoute] int id)
         {
             _userService.Delete(id);
@@ -41,8 +53,15 @@ namespace LibraryAPI.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Admin")]
+        
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Description("Create new user")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
         public ActionResult CreateUser([FromBody] CreateUserDto dto)
         {
 
@@ -51,8 +70,14 @@ namespace LibraryAPI.Controllers
             return Created($"/api/users/{id}", null);
         }
 
-        [Authorize(Roles = "Admin,Employee")]
+        
         [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
+        [Description("Get all users")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<IEnumerable<UserDto>> GetAll()
         {
             var usersDtos = _userService.GetAll();
@@ -62,6 +87,11 @@ namespace LibraryAPI.Controllers
 
 
         [HttpGet("{id}")]
+        [Description("Get user by id")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<UserDto> Get([FromRoute] int id)
         {
             var user = _userService.GetById(id);
@@ -69,6 +99,12 @@ namespace LibraryAPI.Controllers
             return Ok(user);
         }
         [HttpPatch("changePassword/{id}")]
+        [Description("Change password for user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult ChangePassword([FromBody] ChangePasswordDto dto, [FromRoute] int id)
         {
             _userService.ChangePassword(id, dto);
