@@ -106,7 +106,7 @@ namespace LibraryAPI.Services
             if (user is null)
                 throw new NotFoundException("User not found");
 
-            if (user.Books.Count > 5)
+            if (user.Books.Count >= 5)
                 throw new BadRequestException("User can borrow only 5 books");
 
             book.UserId = dto.UserId;
