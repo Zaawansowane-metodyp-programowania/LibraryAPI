@@ -22,6 +22,7 @@ namespace LibraryAPI.Services
         void Delete(int id);
         void Update(int id, UpdateUserDto dto);
         void ChangePassword(int id, ChangePasswordDto dto);
+        void UpdateUserRole(int id, UpdateUserRoleDto dto);
     }
 
     public class UserService : IUserService
@@ -64,6 +65,28 @@ namespace LibraryAPI.Services
 
             _dbContext.SaveChanges();
 
+        }
+        public void UpdateUserRole(int id, UpdateUserRoleDto dto)
+        {
+            var user = _dbContext
+               .Users
+               .FirstOrDefault(u => u.Id == id);
+
+            if (user is null)
+                throw new NotFoundException("User not found");
+
+            int[] validRoleId = { 1, 2, 3 };
+
+            if (validRoleId.Contains(dto.RoleId))
+            {
+                user.RoleId = dto.RoleId;
+                _dbContext.SaveChanges();
+            }
+
+            else
+            {
+                throw new BadRequestException("Invalid RoleId");
+            }
         }
         public void ChangePassword(int id, ChangePasswordDto dto)
         {
