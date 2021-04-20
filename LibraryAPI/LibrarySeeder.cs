@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryAPI.Models;
+using Microsoft.AspNetCore.Identity;
 
 
 
@@ -12,9 +13,12 @@ namespace LibraryAPI
     public class LibrarySeeder
     {
         private readonly LibraryDBContext _dbContext;
-        public LibrarySeeder(LibraryDBContext dbContext)
+        private readonly IPasswordHasher<User> _passwordHasher;
+
+        public LibrarySeeder(LibraryDBContext dbContext, IPasswordHasher<User> passwordHasher)
         {
             _dbContext = dbContext;
+            _passwordHasher = passwordHasher;
         }
         public void Seed()
         {
@@ -69,19 +73,19 @@ namespace LibraryAPI
                 {
                     new User()
                     {
-                        Name ="Karol",
+                        Name ="Dariusz",
                         Surname = "Kowalski",
-                        Email = "karolek123@o2.pl",
-                        Password = "t32423",
+                        Email = "dariusz@o2.pl",
+                        Password = _passwordHasher.HashPassword(null, "User123@"),
                         RoleId=1,
                     },
 
                     new User()
                     {
-                        Name = "Marcin",
-                        Surname = "Zawada",
-                        Email = "zawadzior125@wp.pl",
-                        Password = "43423",
+                        Name = "Kamil",
+                        Surname = "Warda",
+                        Email = "warda123@wp.pl",
+                        Password = _passwordHasher.HashPassword(null, "User123@"),
                         RoleId=2,
                     }
                 };
