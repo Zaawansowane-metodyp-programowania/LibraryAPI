@@ -25,7 +25,7 @@ using LibraryAPI.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using NSwag;
 using NSwag.Generation.Processors.Security;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryAPI
 {
@@ -62,6 +62,8 @@ namespace LibraryAPI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
                 };
             });
+            var connectionString = Configuration.GetConnectionString("AzureServer");
+            services.AddDbContext<LibraryDBContext>(x => x.UseSqlServer(connectionString));
 
             services.AddControllers().AddFluentValidation();
             services.AddSwaggerDocument(document =>
@@ -101,9 +103,6 @@ namespace LibraryAPI
                     builder.AllowAnyMethod()
                             .AllowAnyHeader()
                             .AllowAnyOrigin()
-
-
-
                          );
             });
         }
@@ -137,8 +136,6 @@ namespace LibraryAPI
             {
                 options.DocumentPath = "/swagger/v1/swagger.json";
             });
-
-
 
             app.UseRouting();
             app.UseAuthorization();
