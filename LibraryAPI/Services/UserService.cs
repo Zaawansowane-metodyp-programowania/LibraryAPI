@@ -182,7 +182,7 @@ namespace LibraryAPI.Services
 
 
             int[] validRoleId = { 1, 2, 3 };
-            if (validRoleId.Contains(user.RoleId))
+            if (validRoleId.Contains(dto.RoleId))
             {
                 _dbContext.Users.Add(user);
                 _dbContext.SaveChanges();
@@ -192,7 +192,6 @@ namespace LibraryAPI.Services
             {
                 throw new BadRequestException("Invalid RoleId");
             }
-
         }
     }
 }
