@@ -73,11 +73,11 @@ namespace LibraryAPI
                 {
                     new User()
                     {
-                        Name ="Dariusz",
-                        Surname = "Kowalski",
-                        Email = "dariusz@o2.pl",
-                        Password = _passwordHasher.HashPassword(null, "User123@"),
-                        RoleId=1,
+                        Name ="admin",
+                        Surname = "admin",
+                        Email = "admin@example.com",
+                        Password = _passwordHasher.HashPassword(null, "Admin123@"),
+                        RoleId=3,
                     },
 
                     new User()
@@ -104,10 +104,8 @@ namespace LibraryAPI
                     PublisherName = "Helion",
                     PublishDate = 2015,
                     Category = "Programming",
-                    Reservation = true,
                     Language = "Polish",
                     BookDescription = "Authorized translation from the English language edition, entitled:Clean Code",
-                    UserId =2,
 
                 },
                 new Book()
@@ -118,10 +116,8 @@ namespace LibraryAPI
                     PublisherName = "Helion",
                     PublishDate = 2020,
                     Category = "Programming",
-                    Reservation = false,
                     Language = "",
                     BookDescription = "",
-                    UserId =1,
                 },
             };
             return books;
