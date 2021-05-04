@@ -20,11 +20,8 @@ namespace LibraryAPI.Dtos
         [Required]
         public int PublishDate { get; set; }
         public string Category { get; set; }
-        public bool Reservation { get; set; } = false;
         public string Language { get; set; }
-        public string BookDescription { get; set; }
-        public int? UserId { get; set; }
-
+        public string BookDescription { get; set; }  
 
     }
 }
