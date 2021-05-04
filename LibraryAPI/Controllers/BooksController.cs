@@ -40,15 +40,28 @@ namespace LibraryAPI.Controllers
             return Ok();
         }
 
-        [HttpPatch("reservation/{id}")]
+        [HttpPatch("/reservation/{id}")]
         [Description("Reserve a book")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult UpdateReservation([FromBody] UpdateBookReservationDto dto, [FromRoute] int id)
+        public ActionResult AddReservation([FromRoute] int id)
         {
 
-            _bookService.UpdateReservationById(id, dto);
+            _bookService.AddReservationById(id);
+
+            return Ok();
+        }
+
+        [HttpDelete("/reservation/{id}")]
+        [Description("Delete a Reservation")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public ActionResult DeleteReservation([FromRoute] int id)
+        {
+
+            _bookService.DeleteReservationById(id);
 
             return Ok();
         }

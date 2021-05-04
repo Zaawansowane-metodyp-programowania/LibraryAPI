@@ -21,8 +21,9 @@ namespace LibraryAPI.Services
         BookDto GetById(int id);
         void Delete(int id);
         void Update(int id, UpdateBookDto dto);
-        List<BookDto> GetAllbyUser(int UserId);
-        void UpdateReservationById(int id, UpdateBookReservationDto dto);
+        List<AllBooksUserDto> GetAllbyUser(int UserId);
+        void AddReservationById(int id);
+        void DeleteReservationById(int id);
         void BorrowBookById(int id, BorrowBookDto dto);
         void ReturnBookById(int id);
     }
@@ -67,18 +68,69 @@ namespace LibraryAPI.Services
         }
 
 
-        public void UpdateReservationById(int id, UpdateBookReservationDto dto)
+        public void AddReservationById(int id)
         {
             var book = _dbContext
                 .Books
+                .Include(x => x.Reservations)
                 .FirstOrDefault(r => r.Id == id);
 
             if (book is null)
                 throw new NotFoundException("Book not found");
 
+            var userId = _userContextService.GetUserId;
+            if (userId is null)
+            {
+                throw new ForbidException();
+            }
 
-            book.Reservation = dto.Reservation;
+            var reservationFromBase = book.Reservations
+                .FirstOrDefault(x =>
+                    x.UserId == userId && x.BookId == id);
 
+            if (reservationFromBase != null)
+            {
+                throw new BadRequestException("User already has a reservation for this book");
+            }
+
+            var reservation = new UserBookReservation
+            {
+                UserId = (int)userId,
+                BookId = id,
+                ReservationTime = DateTime.UtcNow
+            };
+
+            _dbContext.UserBookReservations.Add(reservation);
+            _dbContext.SaveChanges();
+        }
+
+        public void DeleteReservationById(int id)
+        {
+            var book = _dbContext
+                .Books
+                .Include(x => x.Reservations)
+                .FirstOrDefault(r => r.Id == id);
+
+            if (book is null)
+                throw new NotFoundException("Book not found");
+
+            var userId = _userContextService.GetUserId;
+            if (userId is null)
+            {
+                throw new ForbidException();
+            }
+
+            var reservation =
+                book.Reservations
+                    .FirstOrDefault(x =>
+                        x.UserId == userId && x.BookId == id);
+
+            if (reservation == null)
+            {
+                throw new NotFoundException("Reservation not found");
+            }
+
+            _dbContext.UserBookReservations.Remove(reservation);
             _dbContext.SaveChanges();
 
         }
@@ -87,6 +139,7 @@ namespace LibraryAPI.Services
         {
             var book = _dbContext
                 .Books
+                .Include(x => x.Reservations)
                 .FirstOrDefault(r => r.Id == id);
 
             if (book is null)
@@ -109,7 +162,24 @@ namespace LibraryAPI.Services
             if (user.Books.Count >= 5)
                 throw new BadRequestException("User can borrow only 5 books");
 
-            book.UserId = dto.UserId;
+            var reservation = book
+                .Reservations
+                .OrderBy(x => x.ReservationTime)
+                .FirstOrDefault();
+
+            if (reservation != null && reservation.UserId != userId)
+            {
+                throw new BadRequestException("Another user has first reservation");
+            }
+
+            if (reservation != null)
+            {
+                _dbContext.UserBookReservations.Remove(reservation);
+            }
+
+            book.UserId = userId;
+            book.BorrowedAt = DateTime.UtcNow;
+            book.ReturningTime = DateTime.UtcNow.AddDays(14);
 
             _dbContext.Books.Update(book);
             _dbContext.SaveChanges();
@@ -127,6 +197,8 @@ namespace LibraryAPI.Services
                 throw new NotFoundException("Book not found");
 
             book.UserId = null;
+            book.BorrowedAt = null;
+            book.ReturningTime = null;
 
             _dbContext.Books.Update(book);
             _dbContext.SaveChanges();
@@ -202,15 +274,15 @@ namespace LibraryAPI.Services
         public int Create(CreateBookDto dto)
         {
             var book = _mapper.Map<Book>(dto);
-            var userId = dto.UserId == 0 ? null : dto.UserId;
-            book.UserId = userId;
+            //var userId = dto.UserId == 0 ? null : dto.UserId;
+            //book.UserId = userId;
             _dbContext.Books.Add(book);
             _dbContext.SaveChanges();
 
             return book.Id;
         }
 
-        public List<BookDto> GetAllbyUser(int UserId)
+        public List<AllBooksUserDto> GetAllbyUser(int UserId)
         {
             var user = _dbContext
                 .Users
@@ -225,7 +297,7 @@ namespace LibraryAPI.Services
             if (!authorizationResult.Succeeded)
                 throw new ForbidException();
 
-            var bookDtos = _mapper.Map<List<BookDto>>(user.Books);
+            var bookDtos = _mapper.Map<List<AllBooksUserDto>>(user.Books);
 
             return bookDtos;
         }
