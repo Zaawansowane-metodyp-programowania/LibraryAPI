@@ -23,6 +23,7 @@ namespace LibraryAPI.Models
         public int RoleId { get; set; }
         public List<Book> Books { get; set; }
         public virtual Role Role { get; set; }
+        public virtual List<UserBookReservation> Reservations { get; set; }
 
     }
 }

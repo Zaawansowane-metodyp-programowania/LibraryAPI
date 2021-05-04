@@ -22,13 +22,17 @@ namespace LibraryAPI.Models
         public int PublishDate { get; set; }
         [Required]
         public string Category { get; set; }
-        public bool Reservation { get; set; }
         public string Language { get; set; }
         public string BookDescription { get; set; }
 
         public int? UserId { get; set; }
 
         public virtual User Users { get; set; }
+        public DateTime? BorrowedAt { get; set; }
+
+        public DateTime? ReturningTime { get; set; }
+
+        public virtual List<UserBookReservation> Reservations { get; set; }
 
 
 

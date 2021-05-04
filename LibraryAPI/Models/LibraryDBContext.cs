@@ -11,6 +11,7 @@ namespace LibraryAPI.Models
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<UserBookReservation> UserBookReservations { get; set; }
         public LibraryDBContext(DbContextOptions<LibraryDBContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +23,9 @@ namespace LibraryAPI.Models
             modelBuilder.Entity<Role>()
                 .Property(u => u.Name)
                 .IsRequired();
+
+            modelBuilder.Entity<UserBookReservation>()
+               .HasKey(x => new { x.UserId, x.BookId });
         }
     }
 }
