@@ -37,6 +37,9 @@ namespace LibraryAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("BorrowedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -55,8 +58,8 @@ namespace LibraryAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Reservation")
-                        .HasColumnType("bit");
+                    b.Property<DateTime?>("ReturningTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -120,6 +123,24 @@ namespace LibraryAPI.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("LibraryAPI.Models.UserBookReservation", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReservationTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "BookId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("UserBookReservations");
+                });
+
             modelBuilder.Entity("LibraryAPI.Models.Book", b =>
                 {
                     b.HasOne("LibraryAPI.Models.User", "Users")
@@ -140,9 +161,35 @@ namespace LibraryAPI.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("LibraryAPI.Models.UserBookReservation", b =>
+                {
+                    b.HasOne("LibraryAPI.Models.Book", "Book")
+                        .WithMany("Reservations")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryAPI.Models.User", "User")
+                        .WithMany("Reservations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LibraryAPI.Models.Book", b =>
+                {
+                    b.Navigation("Reservations");
+                });
+
             modelBuilder.Entity("LibraryAPI.Models.User", b =>
                 {
                     b.Navigation("Books");
+
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }
