@@ -14,6 +14,8 @@ namespace LibraryAPI
         {
             CreateMap<Book, BookDto>();
 
+            CreateMap<Book, AllBooksUserDto>();
+
             CreateMap<CreateBookDto, Book>();
 
 
