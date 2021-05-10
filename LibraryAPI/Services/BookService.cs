@@ -21,7 +21,8 @@ namespace LibraryAPI.Services
         BookDto GetById(int id);
         void Delete(int id);
         void Update(int id, UpdateBookDto dto);
-        List<AllBooksUserDto> GetAllbyUser(int UserId);
+        List<AllBooksUserDto> GetAllByUser(int UserId);
+        List<UserBookReservationDto> GetAllReservedBooksByUserId(int UserId);
         void AddReservationById(int id);
         void DeleteReservationById(int id);
         void BorrowBookById(int id, BorrowBookDto dto);
@@ -282,7 +283,7 @@ namespace LibraryAPI.Services
             return book.Id;
         }
 
-        public List<AllBooksUserDto> GetAllbyUser(int UserId)
+        public List<AllBooksUserDto> GetAllByUser(int UserId)
         {
             var user = _dbContext
                 .Users
@@ -301,6 +302,35 @@ namespace LibraryAPI.Services
 
             return bookDtos;
         }
+
+        public List<UserBookReservationDto> GetAllReservedBooksByUserId(int UserId)
+        {
+            var userBookReservations = _dbContext
+
+                .UserBookReservations
+                .Include(x => x.Book)
+                .Where(r => r.UserId == UserId).ToList();
+        
+                
+            var user = _dbContext
+               .Users
+               .FirstOrDefault(r => r.Id == UserId);
+
+            if (user is null)
+                throw new NotFoundException("User not found");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, user,
+               new UserOperationRequirement(ResourceOperation.Read)).Result;
+             
+            if (!authorizationResult.Succeeded)
+                throw new ForbidException();
+
+            var bookDtos = _mapper.Map<List<UserBookReservationDto>>(userBookReservations);
+            
+
+            return bookDtos;
+        }
+
 
     }
 }
