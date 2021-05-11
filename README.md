@@ -42,7 +42,7 @@ Przykład
 | ../api/books/{id} | Książki - pojedyncza wartość  | | 
 | ../api/books/user/{userid} | User (pracownik i admin dla wszystkich, zwykły użytkownik dla siebie) - pobranie listy wypożyczonych książek dla ID usera  | 
 | ../api/users/{id}  | User - pobranie danych po ID Usera (zwykły użytkownik tylko siebie, admin i pracownik wszystkich) | 
-| ../api/books/user/reservation/{userId} - pobranie książek zarezerwowanych przez użytkownika(Pracownik i admin dla każdego, zwykły użytkownik tylko dla siebie) |
+| ../api/books/user/reservation/{userId} | - pobranie książek zarezerwowanych przez użytkownika(Pracownik i admin dla każdego, zwykły użytkownik tylko dla siebie) |
 | ../api/users | User (pracownik,admin) - pobranie wszystkich userów |
 
 | Wywołania PUT  | Opis | 
