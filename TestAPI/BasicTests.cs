@@ -71,7 +71,53 @@ namespace TestAPI
 
             _client = factory.CreateClient();
         }
-       
+        protected async Task AuthenticateAdmin()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtAdmin());
+        }
+        protected async Task AuthenticateUser()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtUser());
+        }
+        protected async Task AuthenticateEmployee()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtEmployee());
+        }
+
+        private async Task<string> GetJwtAdmin()
+        {
+            var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
+            {
+                Email = "adminTest@example.com",
+                Password = "User123@"
+            });
+
+            var loginVm = await response.Content.ReadAsAsync<LoginVm>();
+            return loginVm.Token;
+        }
+        private async Task<string> GetJwtUser()
+        {
+            var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
+            {
+                Email = "userTest@example.com",
+                Password = "User123@"
+            });
+
+            var loginVm = await response.Content.ReadAsAsync<LoginVm>();
+            return loginVm.Token;
+        }
+
+        private async Task<string> GetJwtEmployee()
+        {
+            var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
+            {
+                Email = "employeeTest@example.com",
+                Password = "User123@"
+            });
+
+            var loginVm = await response.Content.ReadAsAsync<LoginVm>();
+            return loginVm.Token;
+        }
     }
 
 }
