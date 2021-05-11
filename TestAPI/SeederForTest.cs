@@ -70,21 +70,32 @@ namespace TestAPI
                 {
                     new User()
                     {   Id = 1,
-                        Name ="Dariusz",
-                        Surname = "Kowalski",
-                        Email = "dariusz@o2.pl",
+                        Name ="admin",
+                        Surname = "test",
+                        Email = "adminTest@example.com",
                         Password = _passwordHasher.HashPassword(null, "User123@"),
-                        RoleId=1,
+                        RoleId=3,
                     },
 
                     new User()
                     {   Id = 2,
-                        Name = "Kamil",
-                        Surname = "Warda",
-                        Email = "warda123@wp.pl",
+                        Name = "employee",
+                        Surname = "test",
+                        Email = "employeeTest@example.com",
                         Password = _passwordHasher.HashPassword(null, "User123@"),
                         RoleId=2,
+                    },
+
+                     new User()
+                    {   Id = 3,
+                        Name = "user",
+                        Surname = "test",
+                        Email = "userTest@example.com",
+                        Password = _passwordHasher.HashPassword(null, "User123@"),
+                        RoleId=1,
                     }
+
+
                 };
             return users;
         }
@@ -101,7 +112,6 @@ namespace TestAPI
                     PublisherName = "Helion",
                     PublishDate = 2015,
                     Category = "Programming",
-                    Reservation = true,
                     Language = "Polish",
                     BookDescription = "Authorized translation from the English language edition, entitled:Clean Code",
                     UserId =2,
@@ -115,7 +125,6 @@ namespace TestAPI
                     PublisherName = "Helion",
                     PublishDate = 2020,
                     Category = "Programming",
-                    Reservation = false,
                     Language = "",
                     BookDescription = "",
                     UserId =1,
