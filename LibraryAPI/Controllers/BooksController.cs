@@ -169,7 +169,7 @@ namespace LibraryAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<UserBookReservationDto>> GetReservedBooks([FromRoute] int userId)
+        public ActionResult<List<AllBooksReservedByUserDto>> GetReservedBooks([FromRoute] int userId)
         {
             var result = _bookService.GetAllReservedBooksByUserId(userId);
             return Ok(result);
