@@ -71,20 +71,9 @@ namespace TestAPI
 
             _client = factory.CreateClient();
         }
-        protected async Task AuthenticateAdmin()
-        {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtAdmin());
-        }
-        protected async Task AuthenticateUser()
-        {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtUser());
-        }
-        protected async Task AuthenticateEmployee()
-        {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetJwtEmployee());
-        }
+        
 
-        private async Task<string> GetJwtAdmin()
+        private async Task<string> AdminToken()
         {
             var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
             {
@@ -95,7 +84,7 @@ namespace TestAPI
             var loginVm = await response.Content.ReadAsAsync<LoginVm>();
             return loginVm.Token;
         }
-        private async Task<string> GetJwtUser()
+        private async Task<string> UserToken()
         {
             var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
             {
@@ -107,7 +96,7 @@ namespace TestAPI
             return loginVm.Token;
         }
 
-        private async Task<string> GetJwtEmployee()
+        private async Task<string> EmployeeToken()
         {
             var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
             {
@@ -117,6 +106,19 @@ namespace TestAPI
 
             var loginVm = await response.Content.ReadAsAsync<LoginVm>();
             return loginVm.Token;
+        }
+
+        protected async Task AdminAuthorize()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await AdminToken());
+        }
+        protected async Task UserAuthorize()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await UserToken());
+        }
+        protected async Task EmployeeAuthorize()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await EmployeeToken());
         }
     }
 
