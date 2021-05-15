@@ -128,6 +128,7 @@ namespace LibraryAPI.Controllers
 
             return Ok();
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("book/reservation/{bookId}")]
         [Description("Get all users for reserved book by BookId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
