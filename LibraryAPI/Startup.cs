@@ -82,6 +82,7 @@ namespace LibraryAPI
 
             services.AddDbContext<LibraryDBContext>();
             services.AddScoped<LibrarySeeder>();
+            services.AddScoped<BooksSeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IUserService, UserService>();
@@ -108,10 +109,11 @@ namespace LibraryAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, LibrarySeeder seeder)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, LibrarySeeder seeder, BooksSeeder Bookseeder)
         {
             app.UseCors("FrontEndClient");
             seeder.Seed();
+            Bookseeder.SeedBooks();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
