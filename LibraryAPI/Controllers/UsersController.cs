@@ -128,5 +128,15 @@ namespace LibraryAPI.Controllers
 
             return Ok();
         }
+        [HttpGet("book/reservation/{bookId}")]
+        [Description("Get all users for reserved book by BookId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public ActionResult<List<AllUserForReservedBookDto>> GetUsersForReservedBook([FromRoute] int bookId)
+        {
+            var result = _userService.GetAllUserForReservedBookByBookId(bookId);
+            return Ok(result);
+        }
     }
 }

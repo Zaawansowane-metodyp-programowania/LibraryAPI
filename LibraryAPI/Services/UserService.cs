@@ -23,6 +23,7 @@ namespace LibraryAPI.Services
         void Update(int id, UpdateUserDto dto);
         void ChangePassword(int id, ChangePasswordDto dto);
         void UpdateUserRole(int id, UpdateUserRoleDto dto);
+        public List<AllUserForReservedBookDto> GetAllUserForReservedBookByBookId(int BookId);
     }
 
     public class UserService : IUserService
@@ -192,6 +193,28 @@ namespace LibraryAPI.Services
             {
                 throw new BadRequestException("Invalid RoleId");
             }
+        }
+        public List<AllUserForReservedBookDto> GetAllUserForReservedBookByBookId(int BookId)
+        {
+            var userBookReservations = _dbContext
+
+                .UserBookReservations
+                .Include(x => x.User)
+                .Include(x => x.Book)
+                .Where(r => r.BookId == BookId).ToList();
+
+
+            var book = _dbContext
+               .Books
+               .FirstOrDefault(r => r.Id == BookId);
+
+            if (book is null)
+                throw new NotFoundException("Book not found");
+
+            var bookDtos = _mapper.Map<List<AllUserForReservedBookDto>>(userBookReservations);
+
+
+            return bookDtos;
         }
     }
 }
