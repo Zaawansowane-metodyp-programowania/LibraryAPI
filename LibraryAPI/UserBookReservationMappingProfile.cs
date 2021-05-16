@@ -13,7 +13,13 @@ namespace LibraryAPI
         public UserBookReservationMappingProfile()
         {
             CreateMap<UserBookReservation, AllBooksReservedByUserDto>()
-            .ForMember(m => m.BookName, c => c.MapFrom(s => s.Book.BookName));
+            .ForMember(m => m.BookName, c => c.MapFrom(s => s.Book.BookName))
+            .ForMember(m => m.AuthorName, c => c.MapFrom(s => s.Book.AuthorName))
+            .ForMember(m => m.PublisherName, c => c.MapFrom(s => s.Book.PublisherName))
+            .ForMember(m => m.PublishDate, c => c.MapFrom(s => s.Book.PublishDate))
+            .ForMember(m => m.Category, c => c.MapFrom(s => s.Book.Category))
+            .ForMember(m => m.Language, c => c.MapFrom(s => s.Book.Language))
+            .ForMember(m => m.BookDescription, c => c.MapFrom(s => s.Book.BookDescription));
 
             CreateMap<UserBookReservation, AllUserForReservedBookDto>()
             .ForMember(m => m.Name, c => c.MapFrom(s => s.User.Name))
@@ -24,4 +30,3 @@ namespace LibraryAPI
 }
 
 
-//
