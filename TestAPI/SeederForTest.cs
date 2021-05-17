@@ -93,6 +93,32 @@ namespace TestAPI
                         Email = "userTest@example.com",
                         Password = _passwordHasher.HashPassword(null, "User123@"),
                         RoleId=1,
+                    },
+                     new User()
+                    {   Id = 4,
+                        Name = "user",
+                        Surname = "test",
+                        Email = "userqTest@example.com",
+                        Password = _passwordHasher.HashPassword(null, "User123@"),
+                        RoleId=1,
+                    },
+
+                     new User()
+                    {   Id = 5,
+                        Name = "user",
+                        Surname = "test",
+                        Email = "userqqTest@example.com",
+                        Password = _passwordHasher.HashPassword(null, "User123@"),
+                        RoleId=2,
+                    },
+
+                      new User()
+                    {   Id = 6,
+                        Name = "user",
+                        Surname = "test",
+                        Email = "user2Test@example.com",
+                        Password = _passwordHasher.HashPassword(null, "User123@"),
+                        RoleId=2,
                     }
 
 
