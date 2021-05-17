@@ -13,9 +13,9 @@ namespace TestAPI
         [Fact]
         public async Task RegisterWithCorrectDataShouldBeOK()
         {
+            //Act
             var response = await _client.PostAsJsonAsync("/api/account/register", new RegisterUserDto
             {
-
                 Name = "test",
                 Surname = "test",
                 Email = "test@example.com",
@@ -36,6 +36,7 @@ namespace TestAPI
         [InlineData("test", "test", "", "User123@", "User123")]
         public async Task RegisterWithIncorrectDataShouldBeBadRequest(string name, string surnName, string email, string password, string confirmPassword)
         {
+            //Act
             var response = await _client.PostAsJsonAsync("/api/account/register", new RegisterUserDto
             {
                 Name = name,
@@ -44,23 +45,21 @@ namespace TestAPI
                 Password = password,
                 ConfirmPassword = confirmPassword
             });
+            //Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-
-
-        [Theory]
-        [InlineData("adminTest@example.com", "User123@")]
-        [InlineData("employeeTest@example.com", "User123@")]
-        [InlineData("userTest@example.com", "User123@")]
-        public async Task LoginWithCorrectDataShoulbBeOk(string email, string password)
+        [Fact]
+        public async Task LoginWithCorrectDataShoulbBeOk()
         {
+            //Act
             var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
             {
-                Email = email,
-                Password = password
+                Email = "userTest@example.com",
+                Password = "User123@"
             });
 
+            //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
@@ -72,12 +71,14 @@ namespace TestAPI
         [InlineData("user@example.com", "User123@")]
         public async Task LoginWithIncorrectDataShouldBeBadRequest(string email, string password)
         {
+            //Act
             var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
             {
                 Email = email,
                 Password = password
             });
 
+            //Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
