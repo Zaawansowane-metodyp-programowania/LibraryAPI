@@ -69,5 +69,32 @@ namespace TestAPI
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
+        [Fact]
+        public async Task GetBookByCorrrectIdShouldBeOK()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/books/1");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Theory]
+        [InlineData(int.MaxValue)]
+        [InlineData(int.MinValue)]
+        public async Task GetBookByIncorrrectIdShouldBeNotFound(int id)
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.GetAsync($"/api/books/{id}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
     }
 }
