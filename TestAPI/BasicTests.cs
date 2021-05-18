@@ -84,6 +84,17 @@ namespace TestAPI
             var loginVm = await response.Content.ReadAsAsync<LoginVm>();
             return loginVm.Token;
         }
+        private async Task<string> User3Token()
+        {
+            var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
+            {
+                Email = "user3Test@example.com",
+                Password = "User123@"
+            });
+
+            var loginVm = await response.Content.ReadAsAsync<LoginVm>();
+            return loginVm.Token;
+        }
         private async Task<string> User2Token()
         {
             var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
@@ -130,6 +141,10 @@ namespace TestAPI
         protected async Task User2Authorize()
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await User2Token());
+        }
+        protected async Task User3Authorize()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await User3Token());
         }
         protected async Task EmployeeAuthorize()
         {
