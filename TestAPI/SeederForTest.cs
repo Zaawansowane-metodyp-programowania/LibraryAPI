@@ -109,7 +109,7 @@ namespace TestAPI
                         Surname = "test",
                         Email = "userqqTest@example.com",
                         Password = _passwordHasher.HashPassword(null, "User123@"),
-                        RoleId=2,
+                        RoleId=1,
                     },
 
                       new User()
@@ -118,7 +118,16 @@ namespace TestAPI
                         Surname = "test",
                         Email = "user2Test@example.com",
                         Password = _passwordHasher.HashPassword(null, "User123@"),
-                        RoleId=2,
+                        RoleId=1,
+                    },
+
+                        new User()
+                    {   Id = 7,
+                        Name = "user",
+                        Surname = "test",
+                        Email = "user3Test@example.com",
+                        Password = _passwordHasher.HashPassword(null, "User123@"),
+                        RoleId=1,
                     }
 
 
