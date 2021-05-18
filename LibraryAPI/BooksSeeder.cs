@@ -44,7 +44,7 @@ namespace LibraryAPI
                         f => f.Lorem.Paragraph(1));
 
 
-                var books = bookGenerator.Generate(1);
+                var books = bookGenerator.Generate(10);
 
                 _context.AddRange(books);
                 _context.SaveChanges();
@@ -86,23 +86,30 @@ namespace LibraryAPI
         Znak,
         PWN,
         Forum,
-        Publicat
+        Publicat,
+        Replika,
+        Isa,
+        ViaNova
     }
 
     public enum Categories
     {
         Horror,
-        Comedy,
-        Drama,
-        Adventure,
-        Documentary
+        Komedia,
+        Dramat,
+        Dokumentalne,
+        Programowanie,
+        Fantastyka,
+        Historyczna
     }
 
     public enum Languages
     {
-        PL,
-        EN,
-        DE,
-        ES,
+        Polski,
+        Angielski,
+        Niemiecki,
+        Hiszpański,
+        Włoski,
+        Francuski
     }
 }
