@@ -40,7 +40,7 @@ namespace LibraryAPI.Controllers
             return Ok();
         }
 
-        [HttpPatch("/reservation/{id}")]
+        [HttpPatch("reservation/{id}")]
         [Description("Reserve a book")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -53,7 +53,7 @@ namespace LibraryAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("/reservation/{id}")]
+        [HttpDelete("reservation/{id}")]
         [Description("Delete a Reservation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
