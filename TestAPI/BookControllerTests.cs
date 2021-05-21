@@ -12,10 +12,10 @@ namespace TestAPI
     public class BookControllerTests : BasicTests
     {
         [Fact]
-        public async Task GetAllBooksWithoutAuthorizeShouldBeUnauthorized()
+        public async Task GetBookWithoutAuthorizeShouldBeUnauthorized()
         {
             //Act
-            var response = await _client.GetAsync("/api/books");
+            var response = await _client.GetAsync("/api/books/1");
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -85,6 +85,7 @@ namespace TestAPI
         [Theory]
         [InlineData(int.MaxValue)]
         [InlineData(int.MinValue)]
+        [InlineData(0)]
         public async Task GetBookByIncorrrectIdShouldBeNotFound(int id)
         {
             //Arrange
@@ -96,5 +97,221 @@ namespace TestAPI
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
+
+        [Fact]
+        public async Task GetAllBooksBorrowedByUserWithEmployeeAuthorizeShouldBeOK()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/books/user/7");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Theory]
+        [InlineData(int.MaxValue)]
+        [InlineData(int.MinValue)]
+        [InlineData(0)]
+        public async Task GetAllBooksBorrowedByUserWithIncorrectUserIdShouldBeNotFound(int id)
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.GetAsync($"/api/books/user/{id}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+        [Fact]
+        public async Task UserCanGetAllBooksBorrowedByYourSelfSoStatusShouldBeOK()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/books/user/3");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task UserCantGetAllBooksBorrowedByOtherUserSoStatusShouldBeForbidden()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/books/user/1");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task GetAllBooksReservedByUserWithEmployeeAuthorizeShouldBeOK()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/books/user/reservation/4");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Theory]
+        [InlineData(int.MaxValue)]
+        [InlineData(int.MinValue)]
+        [InlineData(0)]
+        public async Task GetAllBooksReservedByUserWithIncorrectUserIdShouldBeNotFound(int id)
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.GetAsync($"/api/books/user/reservation/{id}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task UserCantGetAllBooksReservedByOtherUserSoStatusShouldBeForbidden()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/books/user/reservation/7");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task UserCanGetAllReservedBooksForYourSelfSoStatusShouldBeOK()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/books/user/reservation/3");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+
+
+        [Fact]
+        public async Task CreateBookWithEmployeeAuthorizeAndCorrectDataShouldBeOK()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.PostAsJsonAsync("/api/books/", new CreateBookDto
+            {
+                ISBN = "921-144-313-12",
+                BookName = "otherSurname",
+                AuthorName = "test test",
+                PublisherName = "tester",
+                PublishDate = 2015,
+                Category = "Comedy",
+                Language = "",
+                BookDescription = ""
+            });
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+        }
+
+        [Theory]
+        [InlineData("", "test", "test", "test", 5, "test", "test", "test")]
+        [InlineData("test", "", "test", "test", 5, "test", "test", "test")]
+        [InlineData("test", "test", "", "test", 5, "test", "test", "test")]
+        [InlineData("test", "test", "test", "test", 5, "", "test", "test")]
+        public async Task CreateBookWithEmptyRequiredFieldShouldBeBadRequest(string isbn, string bookName, string authorName,
+            string publisherName, int publishDate, string category, string language, string bookDescription)
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.PostAsJsonAsync("/api/books/", new CreateBookDto
+            {
+                ISBN = isbn,
+                BookName = bookName,
+                AuthorName = authorName,
+                PublisherName = publisherName,
+                PublishDate = publishDate,
+                Category = category,
+                Language = language,
+                BookDescription = bookDescription
+
+            });
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task UpdateBookWithEmployeeAuthorizeAndCorrectDataShouldBeOK()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.PutAsJsonAsync("/api/books/1", new UpdateBookDto
+            {
+                ISBN = "921-144-313-12",
+                BookName = "otherSurname",
+                AuthorName = "test test",
+                PublisherName = "tester",
+                PublishDate = 2015,
+                Category = "Comedy",
+                Language = "",
+                BookDescription = ""
+            });
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Theory]
+        [InlineData("","test","test","test",5,"test","test","test")]
+        [InlineData("test", "", "test", "test", 5, "test", "test", "test")]
+        [InlineData("test", "test", "", "test", 5, "test", "test", "test")]
+        [InlineData("test", "test", "test", "test", 5, "", "test", "test")]
+        public async Task UpdateBookWithEmptyRequiredFieldShouldBeBadRequest(string isbn, string bookName, string authorName,
+            string publisherName, int publishDate, string category, string language, string bookDescription)
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.PutAsJsonAsync("/api/books/1", new UpdateBookDto
+            {
+                ISBN = isbn,
+                BookName = bookName,
+                AuthorName = authorName,
+                PublisherName = publisherName,
+                PublishDate = publishDate,
+                Category = category,
+                Language = language,
+                BookDescription = bookDescription
+
+            });
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
     }
 }
