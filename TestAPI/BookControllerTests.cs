@@ -285,7 +285,7 @@ namespace TestAPI
         }
 
         [Theory]
-        [InlineData("","test","test","test",5,"test","test","test")]
+        [InlineData("", "test", "test", "test", 5, "test", "test", "test")]
         [InlineData("test", "", "test", "test", 5, "test", "test", "test")]
         [InlineData("test", "test", "", "test", 5, "test", "test", "test")]
         [InlineData("test", "test", "test", "test", 5, "", "test", "test")]
@@ -313,5 +313,45 @@ namespace TestAPI
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
+        [Fact]
+        public async Task DeleteBookWithEmployeeAuthorizheShouldBeOK()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.DeleteAsync("/api/books/3");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+        [Fact]
+        public async Task DeleteBookWithUserAuthorizheShouldBeForbidden()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.DeleteAsync("/api/books/3");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+        [Theory]
+        [InlineData(int.MaxValue)]
+        [InlineData(int.MinValue)]
+        [InlineData(0)]
+        public async Task DeleteBookWithIncorrectIdShouldbBeNoFound(int id)
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.DeleteAsync($"/api/books/{id}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+        }
     }
 }
