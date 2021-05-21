@@ -197,6 +197,9 @@ namespace LibraryAPI.Services
             if (book is null)
                 throw new NotFoundException("Book not found");
 
+            if (book.UserId is null)
+                throw new BadRequestException("The book is not on loan");
+
             book.UserId = null;
             book.BorrowedAt = null;
             book.ReturningTime = null;
