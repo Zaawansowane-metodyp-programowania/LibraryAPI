@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using LibraryAPI.Dtos;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,6 +13,99 @@ namespace TestAPI
 {
     public class UserControllerTests : BasicTests
     {
+
+        [Fact]
+        public async Task GetAllUsersWithEmployeeAuthorizeShouldBeOK()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/users");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+        [Fact]
+        public async Task GetAllUsersWithUserAuthorizeShouldBeForbidden()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/users");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task GetAllUsersWithAdminAuthorizeShouldBeOK()
+        {
+            //Arrange
+            await AdminAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/users");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task GetUserByCorrectIdWithEmployeeAuthorizeShouldBeOK()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/users/1");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+        [Theory]
+        [InlineData(int.MinValue)]
+        [InlineData(int.MaxValue)]
+        [InlineData(0)]
+        public async Task GetUserByInCorrectIdShouldBeNotFound(int id)
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.GetAsync($"/api/users/{id}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task UserCantGetOtherUserByIdSoStatusShouldBeForbidden()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/users/1");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task UserCanGetYourselveSoStatusShouldBeOK()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.GetAsync("/api/users/3");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
         [Fact]
         public async Task CreateUserWithoutAuthorizeShouldBeUnauthorized()
         {
@@ -213,6 +308,24 @@ namespace TestAPI
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
+        [Fact]
+        public async Task UpdateRoleIdWithAdminAuthorizeShouldBeOK()
+        {   //Arrange
+            await AdminAuthorize();
+
+            //Act
+            var role = new UpdateUserRoleDto()
+            {
+                RoleId = 2
+            };
+            var roleJson = JsonConvert.SerializeObject(role);
+            var response = await _client.PatchAsync(
+                "/api/users/role/7",
+                new StringContent(roleJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
 
         [Fact]
         public async Task DeleteUserWithAdminAuthorizeShouldBeNoContent()
@@ -240,7 +353,47 @@ namespace TestAPI
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
+        [Fact]
+        public async Task DeleteUserWithEmployeeAuthorizeShouldBeForbidden()
+        {
+            //Arrange
+            await EmployeeAuthorize();
 
+            //Act
+            var response = await _client.DeleteAsync("/api/users/5");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task DeleteUserWithUserAuthorizeShouldBeForbidden()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.DeleteAsync("/api/users/5");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Theory]
+        [InlineData(int.MaxValue)]
+        [InlineData(int.MinValue)]
+        [InlineData(0)]
+        public async Task DeleteUserWithIncorrectIdShouldBeNotFound(int id)
+        {
+            //Arrange
+            await AdminAuthorize();
+
+            //Act
+            var response = await _client.DeleteAsync($"/api/users/{id}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
 
     }
 }
