@@ -149,7 +149,7 @@ namespace TestAPI
                     Category = "Programming",
                     Language = "Polish",
                     BookDescription = "Authorized translation from the English language edition, entitled:Clean Code",
-                    UserId =2,
+                    UserId = 2,
 
                 },
                 new Book()
@@ -162,7 +162,31 @@ namespace TestAPI
                     Category = "Programming",
                     Language = "",
                     BookDescription = "",
-                    UserId =1,
+                    UserId = null
+
+                },
+                new Book()
+                {   Id = 3,
+                    ISBN = "test",
+                    BookName= "ttttt",
+                    AuthorName = "Mark Lutz",
+                    PublisherName = "Helion",
+                    PublishDate = 2020,
+                    Category = "Programming",
+                    Language = "Niemiecki",
+                    BookDescription = "ttttt",
+                },
+                 new Book()
+                {   Id = 4,
+                    ISBN = "test",
+                    BookName= "ttttt",
+                    AuthorName = "Mark Lutz",
+                    PublisherName = "Helion",
+                    PublishDate = 2020,
+                    Category = "Programming",
+                    Language = "Niemiecki",
+                    BookDescription = "ttttt",
+                    UserId = 3
                 },
             };
             return books;
