@@ -1,9 +1,11 @@
 ﻿using FluentAssertions;
 using LibraryAPI.Dtos;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,6 +13,8 @@ namespace TestAPI
 {
     public class BookControllerTests : BasicTests
     {
+        
+
         [Fact]
         public async Task GetBookWithoutAuthorizeShouldBeUnauthorized()
         {
@@ -311,6 +315,138 @@ namespace TestAPI
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task BorrowBookWithEmployeeAuthorizeShouldBeOK()
+        {   //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var borrow = new BorrowBookDto()
+            {
+                UserId = 7
+            };
+            var borrowJson = JsonConvert.SerializeObject(borrow);
+            var response = await _client.PatchAsync(
+                "/api/books/borrow/2",
+                new StringContent(borrowJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+        [Fact]
+        public async Task BorrowBorrowedBookShouldBeBadRequest()
+        {   //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var borrow = new BorrowBookDto()
+            {
+                UserId = 7
+            };
+            var borrowJson = JsonConvert.SerializeObject(borrow);
+            var response = await _client.PatchAsync(
+                "/api/books/borrow/1",
+                new StringContent(borrowJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Theory]
+        [InlineData(int.MaxValue)]
+        [InlineData(int.MinValue)]
+        [InlineData(0)]
+        public async Task BorrowBookWithIncorrectBookIdShouldBeNotFound(int id)
+        {   //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var borrow = new BorrowBookDto()
+            {
+                UserId = 7
+            };
+            var borrowJson = JsonConvert.SerializeObject(borrow);
+            var response = await _client.PatchAsync(
+                $"/api/books/borrow/{id}",
+                new StringContent(borrowJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task BorrowBookWithIncorrectUserIdShouldBeNotFound()
+        {   //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var borrow = new BorrowBookDto()
+            {
+                UserId = 0
+            };
+            var borrowJson = JsonConvert.SerializeObject(borrow);
+            var response = await _client.PatchAsync(
+                "/api/books/borrow/2",
+                new StringContent(borrowJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task ReturnBookFromUserWithEmployeeAuthorizeShouldBeOK()
+        {
+            //Arrange
+            await EmployeeAuthorize();
+            
+            //Act
+            var response = await _client.PatchAsync("/api/books/return/1", null);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+        [Fact]
+        public async Task ReturnBookFromOtherUserWithUserAuthorizeShouldBeForbidden()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.PatchAsync("/api/books/return/1", null);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task ReturnBookNotOnLoanShouldBeBadrequest()
+        {
+
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.PatchAsync("/api/books/return/2", null);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+        [Theory]
+        [InlineData(int.MinValue)]
+        [InlineData(int.MaxValue)]
+        public async Task ReturnBookWithIncorrectIdShouldBeNotFound(int id)
+        {
+
+            //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var response = await _client.PatchAsync($"/api/books/return/{id}", null);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
