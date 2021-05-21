@@ -140,7 +140,7 @@ namespace TestAPI
             var books = new List<Book>()
             {
                 new Book()
-                {
+                {   Id = 1,
                     ISBN = "978-83-283-0234-1",
                     BookName= "Czysty Kod",
                     AuthorName = "Robert C.Martin",
@@ -153,7 +153,7 @@ namespace TestAPI
 
                 },
                 new Book()
-                {
+                {   Id = 2,
                     ISBN = "978-83-283-6150-8",
                     BookName= "Python. Wprowadzenie. Wydanie V",
                     AuthorName = "Mark Lutz",
