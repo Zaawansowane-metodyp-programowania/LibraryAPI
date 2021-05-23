@@ -10,6 +10,7 @@ namespace LibraryAPI.Dtos
         public int UserId { get; set; }
         public DateTime ReservationTime { get; set; }
         public int BookId { get; set; }
+        public string ISBN { get; set; }
         public string BookName { get; set; }
         public string AuthorName { get; set; }
         public string PublisherName { get; set; }
