@@ -354,6 +354,25 @@ namespace TestAPI
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
+        [Fact]
+        public async Task BorrowBookForUserWhoIsntFirstOnReservationListShouldBeBadRequest()
+        {   //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var borrow = new BorrowBookDto()
+            {
+                UserId = 3
+            };
+            var borrowJson = JsonConvert.SerializeObject(borrow);
+            var response = await _client.PatchAsync(
+                "/api/books/borrow/3",
+                new StringContent(borrowJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
         [Theory]
         [InlineData(int.MaxValue)]
         [InlineData(int.MinValue)]
@@ -450,6 +469,35 @@ namespace TestAPI
         }
 
         [Fact]
+        public async Task ReserveBookShouldBeOK()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.PatchAsync("/api/books/reservation/1", null);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Theory]
+        [InlineData(int.MinValue)]
+        [InlineData(int.MaxValue)]
+        [InlineData(0)]
+        public async Task ReserveBookWithIncorrectBookIdShouldBeNotFound(int id)
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.PatchAsync($"/api/books/reservation/{id}", null);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
         public async Task DeleteBookWithEmployeeAuthorizheShouldBeOK()
         {
             //Arrange
@@ -487,7 +535,52 @@ namespace TestAPI
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-
         }
+
+        [Theory]
+        [InlineData(int.MinValue)]
+        [InlineData(int.MaxValue)]
+        [InlineData(0)]
+        public async Task DeleteReserveForBookWithIncorrectBookId(int id)
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.DeleteAsync($"/api/books/reservation/{id}");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task DeleteReserveForBookShouldBeOK()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.DeleteAsync("/api/books/reservation/4");
+                
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task DeleteReserveForBookForWhichWeDontHaveReservationShouldBeNotFound()
+        {
+            //Arrange
+            await UserAuthorize();
+
+            //Act
+            var response = await _client.DeleteAsync("/api/books/reservation/2");
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+
     }
+
 }
+
