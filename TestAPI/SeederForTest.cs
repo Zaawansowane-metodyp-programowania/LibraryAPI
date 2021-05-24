@@ -1,5 +1,6 @@
 ﻿using LibraryAPI.Models;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,6 +40,13 @@ namespace TestAPI
             {
                 var books = GetBooks();
                 _dbContext.Books.AddRange(books);
+                _dbContext.SaveChanges();
+            }
+
+            if (!_dbContext.UserBookReservations.Any())
+            {
+                var reservations = GetBookReservation();
+                _dbContext.UserBookReservations.AddRange(reservations);
                 _dbContext.SaveChanges();
             }
 
@@ -128,6 +136,15 @@ namespace TestAPI
                         Email = "user3Test@example.com",
                         Password = _passwordHasher.HashPassword(null, "User123@"),
                         RoleId=1,
+                    },
+
+                        new User()
+                    {   Id = 8,
+                        Name = "user",
+                        Surname = "test",
+                        Email = "userforChangePassword@example.com",
+                        Password = _passwordHasher.HashPassword(null, "User123@"),
+                        RoleId=1,
                     }
 
 
@@ -188,11 +205,73 @@ namespace TestAPI
                     BookDescription = "ttttt",
                     UserId = 3
                 },
+                  new Book()
+                {   Id = 5,
+                    ISBN = "test",
+                    BookName= "ttttt",
+                    AuthorName = "Mark Lutz",
+                    PublisherName = "Helion",
+                    PublishDate = 2020,
+                    Category = "Programming",
+                    Language = "Niemiecki",
+                    BookDescription = "ttttt",
+                    UserId = 3
+                },
+
+                  new Book()
+                {   Id = 6,
+                    ISBN = "test",
+                    BookName= "ttttt",
+                    AuthorName = "Mark Lutz",
+                    PublisherName = "Helion",
+                    PublishDate = 2020,
+                    Category = "Programming",
+                    Language = "Niemiecki",
+                    BookDescription = "ttttt",
+                    UserId = 3
+                },
+                    new Book()
+                {   Id = 7,
+                    ISBN = "test",
+                    BookName= "ttttt",
+                    AuthorName = "Mark Lutz",
+                    PublisherName = "Helion",
+                    PublishDate = 2020,
+                    Category = "Programming",
+                    Language = "Niemiecki",
+                    BookDescription = "ttttt",
+                },
             };
             return books;
         }
 
 
+        private IEnumerable<UserBookReservation> GetBookReservation()
+        {
+            var reservations = new List<UserBookReservation>()
+            {
+                new UserBookReservation()
+                {   BookId = 4,
+                    UserId = 3,
+                    ReservationTime = DateTime.UtcNow
+                },
+
+                new UserBookReservation()
+                {   BookId = 5,
+                    UserId = 3,
+                    ReservationTime = DateTime.UtcNow
+                },
+
+                new UserBookReservation()
+                {   BookId = 3,
+                    UserId = 5,
+                    ReservationTime = DateTime.UtcNow
+                },
+
+            };
+
+            return reservations;
+        }
 
     }
 
