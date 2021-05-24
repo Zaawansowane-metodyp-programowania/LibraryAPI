@@ -118,6 +118,17 @@ namespace TestAPI
             return loginVm.Token;
         }
 
+        private async Task<string> UserForChangePasswordToken()
+        {
+            var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
+            {
+                Email = "userforChangePassword@example.com",
+                Password = "User123@"
+            });
+
+            var loginVm = await response.Content.ReadAsAsync<LoginVm>();
+            return loginVm.Token;
+        }
         private async Task<string> EmployeeToken()
         {
             var response = await _client.PostAsJsonAsync("/api/account/login", new LoginDto
@@ -149,6 +160,11 @@ namespace TestAPI
         protected async Task EmployeeAuthorize()
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await EmployeeToken());
+        }
+
+        protected async Task UserForChangePasswordAuthorize()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await UserForChangePasswordToken());
         }
     }
 
