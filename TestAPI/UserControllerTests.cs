@@ -328,6 +328,91 @@ namespace TestAPI
         }
 
         [Fact]
+        public async Task ChangePasswordForOtherUserWithAdminAuthorizeShouldBeOK()
+        {   //Arrange
+            await AdminAuthorize();
+
+            //Act
+            var password = new ChangePasswordDto()
+            {
+                NewPassword = "test123@",
+                ConfirmNewPassword = "test123@"
+            };
+            var passwordJson = JsonConvert.SerializeObject(password);
+            var response = await _client.PatchAsync(
+                "/api/users/changePassword/4",
+                new StringContent(passwordJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task ChangePasswordForOtherUserWithEmployeeAuthorizeShouldBeForbidden()
+        {   //Arrange
+            await EmployeeAuthorize();
+
+            //Act
+            var password = new ChangePasswordDto()
+            {
+                NewPassword = "test123@",
+                ConfirmNewPassword = "test123@"
+            };
+            var passwordJson = JsonConvert.SerializeObject(password);
+            var response = await _client.PatchAsync(
+                "/api/users/changePassword/4",
+                new StringContent(passwordJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task UsersCanChangePasswordForYourselfSoStatusShouldBeOK()
+        {   //Arrange
+            await UserForChangePasswordAuthorize();
+
+            //Act
+            var password = new ChangePasswordDto()
+            {
+                OldPassword = "User123@",
+                NewPassword = "test123@",
+                ConfirmNewPassword = "test123@"
+            };
+            var passwordJson = JsonConvert.SerializeObject(password);
+            var response = await _client.PatchAsync(
+                "/api/users/changePassword/8",
+                new StringContent(passwordJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Theory]
+        [InlineData("BadPassword", "test", "test")]
+        [InlineData("User123@", "NotEqual", "test")]
+        [InlineData("User123@", "test", "NotEqual")]
+        public async Task ChangePasswordWithNotEqualNewAndConfirmPasswordOrIncorrectOldPasswordShouldBeBadRequest(string oldPassword, string newPassword, string confirmNewPassword)
+        {   //Arrange
+            await UserForChangePasswordAuthorize();
+
+            //Act
+            var password = new ChangePasswordDto()
+            {
+                OldPassword = oldPassword,
+                NewPassword = newPassword,
+                ConfirmNewPassword = confirmNewPassword
+            };
+            var passwordJson = JsonConvert.SerializeObject(password);
+            var response = await _client.PatchAsync(
+                "/api/users/changePassword/8",
+                new StringContent(passwordJson, Encoding.UTF8, "application/json")); ;
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
         public async Task DeleteUserWithAdminAuthorizeShouldBeNoContent()
         {
             //Arrange
