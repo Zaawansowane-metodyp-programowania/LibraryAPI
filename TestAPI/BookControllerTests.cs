@@ -366,7 +366,7 @@ namespace TestAPI
             };
             var borrowJson = JsonConvert.SerializeObject(borrow);
             var response = await _client.PatchAsync(
-                "/api/books/borrow/3",
+                "/api/books/borrow/8",
                 new StringContent(borrowJson, Encoding.UTF8, "application/json")); ;
 
             //Assert
