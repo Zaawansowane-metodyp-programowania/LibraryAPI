@@ -13,7 +13,6 @@ namespace TestAPI
 {
     public class BookControllerTests : BasicTests
     {
-        
 
         [Fact]
         public async Task GetBookWithoutAuthorizeShouldBeUnauthorized()
@@ -419,7 +418,7 @@ namespace TestAPI
         {
             //Arrange
             await EmployeeAuthorize();
-            
+
             //Act
             var response = await _client.PatchAsync("/api/books/return/1", null);
 
@@ -561,7 +560,7 @@ namespace TestAPI
 
             //Act
             var response = await _client.DeleteAsync("/api/books/reservation/4");
-                
+
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }

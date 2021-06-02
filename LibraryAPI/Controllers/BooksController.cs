@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using LibraryAPI.Models;
 using LibraryAPI.Dtos;
-using AutoMapper;
 using LibraryAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel;
@@ -126,7 +121,7 @@ namespace LibraryAPI.Controllers
 
         }
 
-        
+
 
         [HttpGet]
         [Description("Get all books")]

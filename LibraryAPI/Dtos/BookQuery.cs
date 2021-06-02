@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LibraryAPI.Dtos
+﻿namespace LibraryAPI.Dtos
 {
     public class BookQuery
     {
@@ -12,6 +7,5 @@ namespace LibraryAPI.Dtos
         public int PageSize { get; set; }
         public string SortBy { get; set; }
         public SortDirection SortDirection { get; set; }
-
     }
 }

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-
-
-namespace LibraryAPI.Dtos
+﻿namespace LibraryAPI.Dtos
 {
     public class BookDto
     {
-
         public int Id { get; set; }
         public string ISBN { get; set; }
         public string BookName { get; set; }
@@ -18,8 +10,6 @@ namespace LibraryAPI.Dtos
         public int PublishDate { get; set; }
         public string Category { get; set; }
         public string Language { get; set; }
-        public string BookDescription { get; set; }
-        
-
+        public string BookDescription { get; set; }  
     }
 }

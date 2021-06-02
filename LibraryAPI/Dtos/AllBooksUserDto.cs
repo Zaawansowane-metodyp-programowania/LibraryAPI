@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LibraryAPI.Dtos
 {
@@ -19,7 +16,6 @@ namespace LibraryAPI.Dtos
         public string BookDescription { get; set; }
         public int? UserId { get; set; }
         public DateTime? BorrowedAt { get; set; }
-
         public DateTime? ReturningTime { get; set; }
     }
 }

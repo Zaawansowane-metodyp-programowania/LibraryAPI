@@ -7,8 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-
-
 namespace TestAPI
 {
     public class UserControllerTests : BasicTests
@@ -479,6 +477,5 @@ namespace TestAPI
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
-
     }
 }

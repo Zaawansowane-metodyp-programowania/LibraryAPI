@@ -1,9 +1,5 @@
-﻿using LibraryAPI.Exceptions;
-using LibraryAPI.Models;
+﻿using LibraryAPI.Models;
 using Microsoft.AspNetCore.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LibraryAPI.Authorization
+﻿namespace LibraryAPI.Authorization
 {
     public enum ResourceOperation
     {

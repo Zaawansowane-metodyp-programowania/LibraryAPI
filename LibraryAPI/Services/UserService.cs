@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LibraryAPI.Dtos;
 using LibraryAPI.Models;
@@ -181,7 +180,6 @@ namespace LibraryAPI.Services
             var hashedPassword = _passwordHasher.HashPassword(user, dto.Password);
             user.Password = hashedPassword;
 
-
             int[] validRoleId = { 1, 2, 3 };
             if (validRoleId.Contains(dto.RoleId))
             {
@@ -203,7 +201,6 @@ namespace LibraryAPI.Services
                 .Include(x => x.Book)
                 .Where(r => r.BookId == BookId).ToList();
 
-
             var book = _dbContext
                .Books
                .FirstOrDefault(r => r.Id == BookId);
@@ -212,7 +209,6 @@ namespace LibraryAPI.Services
                 throw new NotFoundException("Book not found");
 
             var bookDtos = _mapper.Map<List<AllUserForReservedBookDto>>(userBookReservations);
-
 
             return bookDtos;
         }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibraryAPI.Models
@@ -24,6 +21,5 @@ namespace LibraryAPI.Models
         public List<Book> Books { get; set; }
         public virtual Role Role { get; set; }
         public virtual List<UserBookReservation> Reservations { get; set; }
-
     }
 }

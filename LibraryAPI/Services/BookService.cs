@@ -37,7 +37,7 @@ namespace LibraryAPI.Services
         private readonly IUserContextService _userContextService;
         private readonly IAuthorizationService _authorizationService;
 
-        public BookService(LibraryDBContext dbContext, IMapper mapper, ILogger<BookService> logger,IUserContextService userContextService,IAuthorizationService authorizationService)
+        public BookService(LibraryDBContext dbContext, IMapper mapper, ILogger<BookService> logger, IUserContextService userContextService, IAuthorizationService authorizationService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -67,7 +67,6 @@ namespace LibraryAPI.Services
             _dbContext.SaveChanges();
 
         }
-
 
         public void AddReservationById(int id)
         {
@@ -187,7 +186,6 @@ namespace LibraryAPI.Services
 
         }
 
-
         public void ReturnBookById(int id)
         {
             var book = _dbContext
@@ -236,6 +234,7 @@ namespace LibraryAPI.Services
             var result = _mapper.Map<BookDto>(book);
             return result;
         }
+
         public PagedResult<BookDto> GetAll(BookQuery query)
         {
             var baseQuery = _dbContext
@@ -275,11 +274,10 @@ namespace LibraryAPI.Services
 
             return result;
         }
+
         public int Create(CreateBookDto dto)
         {
             var book = _mapper.Map<Book>(dto);
-            //var userId = dto.UserId == 0 ? null : dto.UserId;
-            //book.UserId = userId;
             _dbContext.Books.Add(book);
             _dbContext.SaveChanges();
 
@@ -313,8 +311,8 @@ namespace LibraryAPI.Services
                 .UserBookReservations
                 .Include(x => x.Book)
                 .Where(r => r.UserId == UserId).ToList();
-        
-                
+
+
             var user = _dbContext
                .Users
                .FirstOrDefault(r => r.Id == UserId);
@@ -324,16 +322,13 @@ namespace LibraryAPI.Services
 
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, user,
                new UserOperationRequirement(ResourceOperation.Read)).Result;
-             
+
             if (!authorizationResult.Succeeded)
                 throw new ForbidException();
 
             var bookDtos = _mapper.Map<List<AllBooksReservedByUserDto>>(userBookReservations);
-            
 
             return bookDtos;
         }
-
-
     }
 }
