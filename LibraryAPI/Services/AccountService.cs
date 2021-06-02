@@ -77,20 +77,20 @@ namespace LibraryAPI.Services
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
 
-            var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer,
+            var tokenJwt = new JwtSecurityToken(_authenticationSettings.JwtIssuer,
                 _authenticationSettings.JwtIssuer,
                 claims,
                 expires: expires,
                 signingCredentials: cred);
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenpepe = tokenHandler.WriteToken(token);
+            var token = tokenHandler.WriteToken(tokenJwt);
 
             var loginVm = new LoginVm
             {
                 Id = user.Id,
                 RoleId = user.RoleId,
-                Token = tokenpepe
+                Token = token
             };
 
 
