@@ -4,9 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
-
-
 namespace TestAPI
 {
     public class SeederForTest
@@ -230,8 +227,19 @@ namespace TestAPI
                     BookDescription = "ttttt",
                     UserId = 3
                 },
-                    new Book()
+                  new Book()
                 {   Id = 7,
+                    ISBN = "test",
+                    BookName= "ttttt",
+                    AuthorName = "Mark Lutz",
+                    PublisherName = "Helion",
+                    PublishDate = 2020,
+                    Category = "Programming",
+                    Language = "Niemiecki",
+                    BookDescription = "ttttt",
+                },
+                  new Book()
+                {   Id = 8,
                     ISBN = "test",
                     BookName= "ttttt",
                     AuthorName = "Mark Lutz",
@@ -244,7 +252,6 @@ namespace TestAPI
             };
             return books;
         }
-
 
         private IEnumerable<UserBookReservation> GetBookReservation()
         {
@@ -263,7 +270,7 @@ namespace TestAPI
                 },
 
                 new UserBookReservation()
-                {   BookId = 3,
+                {   BookId = 8,
                     UserId = 5,
                     ReservationTime = DateTime.UtcNow
                 },
