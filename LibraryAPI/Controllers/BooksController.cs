@@ -149,7 +149,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Description("Get all books for user by user id")]
+        [Description("Get all books borrowed by user id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
