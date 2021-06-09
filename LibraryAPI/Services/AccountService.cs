@@ -42,11 +42,21 @@ namespace LibraryAPI.Services
                 RoleId = dto.RoleId
             };
 
-            var hashedPassword = _passwordHasher.HashPassword(newUser, dto.Password);
+            int[] validRoleId = { 1, 2, 3 };
+            if (validRoleId.Contains(dto.RoleId))
+            {
+                var hashedPassword = _passwordHasher.HashPassword(newUser, dto.Password);
 
-            newUser.Password = hashedPassword;
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+                newUser.Password = hashedPassword;
+                _context.Users.Add(newUser);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new BadRequestException("Invalid RoleId");
+            }
+
+            
         }
         public LoginVm GenerateJwt(LoginDto dto)
         {
