@@ -21,7 +21,7 @@ namespace LibraryAPI.Services
         BookDto GetById(int id);
         void Delete(int id);
         void Update(int id, UpdateBookDto dto);
-        List<AllBooksUserDto> GetAllByUser(int UserId);
+        List<AllBooksBorrowedByUserDto> GetAllByUser(int UserId);
         List<AllBooksReservedByUserDto> GetAllReservedBooksByUserId(int UserId);
         void AddReservationById(int id);
         void DeleteReservationById(int id);
@@ -284,7 +284,7 @@ namespace LibraryAPI.Services
             return book.Id;
         }
 
-        public List<AllBooksUserDto> GetAllByUser(int UserId)
+        public List<AllBooksBorrowedByUserDto> GetAllByUser(int UserId)
         {
             var user = _dbContext
                 .Users
@@ -299,7 +299,7 @@ namespace LibraryAPI.Services
             if (!authorizationResult.Succeeded)
                 throw new ForbidException();
 
-            var bookDtos = _mapper.Map<List<AllBooksUserDto>>(user.Books);
+            var bookDtos = _mapper.Map<List<AllBooksBorrowedByUserDto>>(user.Books);
 
             return bookDtos;
         }

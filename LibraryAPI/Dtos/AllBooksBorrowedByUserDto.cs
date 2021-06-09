@@ -2,7 +2,7 @@
 
 namespace LibraryAPI.Dtos
 {
-    public class AllBooksUserDto
+    public class AllBooksBorrowedByUserDto
     {
         public int Id { get; set; }
         public string ISBN { get; set; }
